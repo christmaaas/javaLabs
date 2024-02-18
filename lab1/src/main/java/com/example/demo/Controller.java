@@ -16,12 +16,8 @@ public class Controller {
 	}
 
 	@GetMapping("/search")
-	public Logic search(@RequestParam(value = "term") String query)
+	public RequestData search(@RequestParam(value = "request") String query)
 	{
-		Logic logic = new Logic();
-
-		logic.searchInfoByQuery(query);
-
-		return logic;
+		return Logic.searchInfoByQuery(query);
 	}
 }

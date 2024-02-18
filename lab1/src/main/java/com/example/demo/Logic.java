@@ -4,13 +4,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class Logic
 {
-    private String searchResultFormat;
-    private String searchRequest;
-    private String pageTitle;
-    private long pageId;
-    private String searchResult;
-
-    private String searchPage(String query)
+    private static String searchPage(String query)
     {
         String apiUrl = "https://en.wikipedia.org/w/api.php" +
                 "?action=query" +
@@ -24,28 +18,35 @@ public class Logic
 
         return restTemplate.getForObject(apiUrl, String.class);
     }
-    public void searchInfoByQuery(String query)
+    public static RequestData searchInfoByQuery(String query)
     {
         String searchPageResult = searchPage(query);
 
-        if(!searchPageResult.contains("\"title\":\""))
+        RequestData data = new RequestData();
+
+        if(searchPageResult != null)
         {
-            this.searchResultFormat = "None";
-            this.searchRequest = query;
-            this.pageTitle = "No title";
-            this.searchResult = "No result";
-            this.pageId = -1;
+            if(!searchPageResult.contains("\"title\":\""))
+            {
+                data.setSearchResultFormat("None");
+                data.setSearchRequest(query);
+                data.setPageTitle("No title");
+                data.setSearchResult("No result");
+                data.setPageId(-1);
+            }
+            else
+            {
+                data.setSearchResultFormat("Page");
+                data.setSearchRequest(query);
+                data.setPageId(parsePageId(searchPageResult));
+                data.setPageTitle(parsePageTitle(searchPageResult));
+                data.setSearchResult(parseMainInfo(searchPageResult));
+            }
         }
-        else
-        {
-            this.searchResultFormat = "Page";
-            this.searchRequest = query;
-            this.pageId = parsePageId(searchPageResult);
-            this.pageTitle = parsePageTitle(searchPageResult);
-            this.searchResult = parseMainInfo(searchPageResult);
-        }
+
+        return data;
     }
-    private int parsePageId(String searchResult)
+    private static int parsePageId(String searchResult)
     {
         String target = "\"pageid\":";
 
@@ -57,7 +58,7 @@ public class Logic
         return Integer.parseInt(pageIdString.trim());
     }
 
-    private String parsePageTitle(String searchResult)
+    private static String parsePageTitle(String searchResult)
     {
         String target = "\"title\":\"";
 
@@ -67,18 +68,26 @@ public class Logic
                 searchResult.indexOf('"', startIndex + target.length()));
     }
 
-    private String parseMainInfo(String searchResult)
+    private static String parseMainInfo(String searchResult)
     {
         String textWithoutMetaData = searchResult.substring(searchResult.indexOf("\\n") + 2);
 
-        return textWithoutMetaData.replaceAll("\\\\u[a-fA-F0-9]{4,}", "")    // Удаляем спец-символы страницы типа
-                .replaceAll("\\\\n", " ")                 // Заменяем символы новой строки (\n) на пробелы
-                .replaceAll("\\\\", "")                   // Удаляем обратные косые черты (\)
-                .replaceAll("<[^>]*>", "")                // Удаляем HTML теги
-                .replaceAll("[^\\p{L}\\p{N}\\s\\p{Punct}]", "")  // Удаляем все, кроме букв, цифр, пробелов и знаков препинания
-                .replaceAll("\\s{2,}", " ")               // Заменяем двойные пробелы на одиночные
+        return textWithoutMetaData.replaceAll("\\\\u[a-fA-F0-9]{4,}", "")
+                .replaceAll("\\\\n", " ")
+                .replaceAll("\\\\", "")
+                .replaceAll("<[^>]*>", "")
+                .replaceAll("[^\\p{L}\\p{N}\\s\\p{Punct}]", "")
+                .replaceAll("\\s{2,}", " ")
                 .trim();
     }
+}
+class RequestData
+{
+    private String searchResultFormat;
+    private String searchRequest;
+    private String pageTitle;
+    private int pageId;
+    private String searchResult;
 
     public String getSearchResultFormat()
     {
@@ -96,9 +105,23 @@ public class Logic
     {
         return this.pageTitle;
     }
-    public long getPageId()
+    public int getPageId()
     {
         return this.pageId;
     }
 
+    public void setSearchResultFormat(String searchResultFormat)
+    {
+        this.searchResultFormat = searchResultFormat;
+    }
+    public void setSearchResult(String searchResult)
+    {
+        this.searchResult = searchResult;
+    }
+    public void setSearchRequest(String searchRequest) { this.searchRequest = searchRequest; }
+    public void setPageTitle(String pageTitle) { this.pageTitle = pageTitle; }
+    public void setPageId(int pageId)
+    {
+        this.pageId = pageId;
+    }
 }
