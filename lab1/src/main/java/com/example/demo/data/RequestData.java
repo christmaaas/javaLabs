@@ -29,10 +29,7 @@ public class RequestData
         return this.pageId;
     }
 
-    public void setSearchResultFormat(String searchResultFormat)
-    {
-        this.searchResultFormat = searchResultFormat;
-    }
+    public void setSearchResultFormat(String searchResultFormat) { this.searchResultFormat = searchResultFormat; }
     public void setSearchResult(String searchResult)
     {
         this.searchResult = searchResult;
