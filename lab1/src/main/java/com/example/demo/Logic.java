@@ -7,7 +7,7 @@ public class Logic
     private String searchResultFormat;
     private String searchRequest;
     private String pageTitle;
-    private int pageId;
+    private long pageId;
     private String searchResult;
 
     private String searchPage(String query)
@@ -21,6 +21,7 @@ public class Logic
                 "&gsrlimit=1";
 
         RestTemplate restTemplate = new RestTemplate();
+
         return restTemplate.getForObject(apiUrl, String.class);
     }
     public void searchInfoByQuery(String query)
@@ -68,9 +69,15 @@ public class Logic
 
     private String parseMainInfo(String searchResult)
     {
-        String textWithoutMetaData = searchResult.substring(searchResult.indexOf(pageTitle) + pageTitle.length());
+        String textWithoutMetaData = searchResult.substring(searchResult.indexOf("\\n") + 2);
 
-        return textWithoutMetaData.replaceAll("<[^>]*>", "");
+        return textWithoutMetaData.replaceAll("\\\\u[a-fA-F0-9]{4,}", "")    // Удаляем спец-символы страницы типа
+                .replaceAll("\\\\n", " ")                 // Заменяем символы новой строки (\n) на пробелы
+                .replaceAll("\\\\", "")                   // Удаляем обратные косые черты (\)
+                .replaceAll("<[^>]*>", "")                // Удаляем HTML теги
+                .replaceAll("[^\\p{L}\\p{N}\\s\\p{Punct}]", "")  // Удаляем все, кроме букв, цифр, пробелов и знаков препинания
+                .replaceAll("\\s{2,}", " ")               // Заменяем двойные пробелы на одиночные
+                .trim();
     }
 
     public String getSearchResultFormat()
@@ -89,7 +96,7 @@ public class Logic
     {
         return this.pageTitle;
     }
-    public int getPageId()
+    public long getPageId()
     {
         return this.pageId;
     }
