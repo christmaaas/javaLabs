@@ -9,7 +9,7 @@ import java.util.Map;
 public class ScheduleResponceDto
 {
     private EmployeeDto employeeDto;
-    private Map<String, List<ScheduleDto>> schedules; // Используем карту для хранения расписания по дням недели
+    private Map<String, List<ScheduleDto>> schedules;
     private List<ExamDto> exams;
     private String startDate;
     private String endDate;
