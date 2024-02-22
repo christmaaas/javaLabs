@@ -1,4 +1,4 @@
-package com.example.TeacherShedule.Model;
+package com.example.teachershedule.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "info_about_request")
-public class Teacher
+public class TeacherEntity
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

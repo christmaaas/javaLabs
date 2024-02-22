@@ -1,4 +1,4 @@
-package com.example.TeacherShedule.Dto;
+package com.example.teachershedule.dto;
 
 public class StudentGroupDto
 {

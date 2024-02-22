@@ -1,6 +1,6 @@
-package com.example.TeacherShedule.Dao;
+package com.example.teachershedule.dao;
 
-import com.example.TeacherShedule.Dto.ScheduleResponceDto;
+import com.example.teachershedule.dto.ScheduleResponceDto;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 

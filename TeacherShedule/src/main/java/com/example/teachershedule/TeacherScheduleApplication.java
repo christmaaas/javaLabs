@@ -1,4 +1,4 @@
-package com.example.TeacherShedule;
+package com.example.teachershedule;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

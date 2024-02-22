@@ -1,7 +1,7 @@
-package com.example.TeacherShedule.Controller;
+package com.example.teachershedule.controller;
 
-import com.example.TeacherShedule.Dto.ScheduleResponceDto;
-import com.example.TeacherShedule.Service.TeacherScheduleService;
+import com.example.teachershedule.dto.ScheduleResponceDto;
+import com.example.teachershedule.service.TeacherScheduleService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;

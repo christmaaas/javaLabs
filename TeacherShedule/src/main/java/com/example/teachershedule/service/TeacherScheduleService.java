@@ -1,9 +1,9 @@
-package com.example.TeacherShedule.Service;
+package com.example.teachershedule.service;
 
-import com.example.TeacherShedule.Dao.TeacherScheduleDao;
-import com.example.TeacherShedule.Dto.ScheduleResponceDto;
-import com.example.TeacherShedule.Model.Teacher;
-import com.example.TeacherShedule.Repository.TeacherScheduleRepository;
+import com.example.teachershedule.dao.TeacherScheduleDao;
+import com.example.teachershedule.dto.ScheduleResponceDto;
+import com.example.teachershedule.entity.TeacherEntity;
+import com.example.teachershedule.dao.TeacherScheduleRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +21,7 @@ public class TeacherScheduleService
     {
         ScheduleResponceDto scheduleResponceDto = teacherScheduleDao.searchTeacherSchedule(idName);
 
-        Teacher teacher = new Teacher();
+        TeacherEntity teacher = new TeacherEntity();
         teacher.setID(scheduleResponceDto.getEmployeeDto().getId());
         teacher.setFirstName(scheduleResponceDto.getEmployeeDto().getFirstName());
         teacher.setLastName(scheduleResponceDto.getEmployeeDto().getLastName());

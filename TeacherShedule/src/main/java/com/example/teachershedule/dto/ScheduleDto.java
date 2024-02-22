@@ -1,8 +1,8 @@
-package com.example.TeacherShedule.Dto;
+package com.example.teachershedule.dto;
 
 import java.util.List;
 
-public class ExamDto
+public class ScheduleDto
 {
     private List<String> auditories;
     private String endLessonTime;
@@ -20,7 +20,7 @@ public class ExamDto
     private boolean announcement;
     private boolean split;
 
-    // Getters
+
     public List<String> getAuditories() {
         return auditories;
     }
@@ -81,7 +81,6 @@ public class ExamDto
         return split;
     }
 
-    // Setters
     public void setAuditories(List<String> auditories) {
         this.auditories = auditories;
     }
