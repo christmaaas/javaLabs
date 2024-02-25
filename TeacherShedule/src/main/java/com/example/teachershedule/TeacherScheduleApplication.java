@@ -6,6 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TeacherScheduleApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(TeacherScheduleApplication.class, args); // App
+		SpringApplication.run(TeacherScheduleApplication.class, args);  // App
 	}
 }
