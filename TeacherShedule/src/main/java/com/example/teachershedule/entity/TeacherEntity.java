@@ -13,7 +13,7 @@ public class TeacherEntity
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int ID;
+    private int  id;
 
     @Column(name = "firstName")
     private String firstName;
@@ -24,8 +24,8 @@ public class TeacherEntity
     @Column(name = "email")
     private String email;
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -40,8 +40,8 @@ public class TeacherEntity
         return email;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setFirstName(String firstName) {

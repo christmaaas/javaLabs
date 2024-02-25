@@ -22,7 +22,7 @@ public class TeacherScheduleService
         ScheduleResponceDto scheduleResponceDto = teacherScheduleDao.searchTeacherSchedule(idName);
 
         TeacherEntity teacher = new TeacherEntity();
-        teacher.setID(scheduleResponceDto.getEmployeeDto().getId());
+        teacher.setId(scheduleResponceDto.getEmployeeDto().getId());
         teacher.setFirstName(scheduleResponceDto.getEmployeeDto().getFirstName());
         teacher.setLastName(scheduleResponceDto.getEmployeeDto().getLastName());
         teacher.setEmail(scheduleResponceDto.getEmployeeDto().getEmail());
