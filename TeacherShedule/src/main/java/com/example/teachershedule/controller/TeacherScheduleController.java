@@ -16,8 +16,8 @@ public class TeacherScheduleController
     }
 
     @GetMapping("/get-schedule")
-    public ScheduleResponceDto getEmployeeSchedule(@RequestParam() String apiUrl, @RequestParam() String teacherId)
+    public ScheduleResponceDto getEmployeeSchedule(@RequestParam(value = "teacherId") String teacherId)
     {
-        return teacherScheduleService.searchTeacherSchedule(apiUrl, teacherId);
+        return teacherScheduleService.searchTeacherSchedule(teacherId);
     }
 }

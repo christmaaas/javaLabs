@@ -7,9 +7,9 @@ import org.springframework.web.client.RestTemplate;
 @Repository
 public class TeacherScheduleDao
 {
-    public ScheduleResponceDto searchTeacherSchedule(String apiUrl, String teacherId)
+    public ScheduleResponceDto searchTeacherSchedule(String teacherId)
     {
-        String apiRequest = apiUrl + teacherId;
+        String apiRequest = "https://iis.bsuir.by/api/v1/employees/schedule/" + teacherId;
 
         RestTemplate restTemplate = new RestTemplate();
 

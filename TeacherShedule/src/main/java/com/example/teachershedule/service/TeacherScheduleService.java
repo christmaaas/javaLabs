@@ -17,9 +17,9 @@ public class TeacherScheduleService
         this.teacherScheduleRepository = teacherScheduleRepository;
     }
 
-    public ScheduleResponceDto searchTeacherSchedule(String apiUrl, String teacherId)
+    public ScheduleResponceDto searchTeacherSchedule(String teacherId)
     {
-        ScheduleResponceDto scheduleResponceDto = teacherScheduleDao.searchTeacherSchedule(apiUrl, teacherId);
+        ScheduleResponceDto scheduleResponceDto = teacherScheduleDao.searchTeacherSchedule(teacherId);
 
         TeacherEntity teacher = new TeacherEntity();
         teacher.setId(scheduleResponceDto.getEmployeeDto().getId());
