@@ -23,13 +23,17 @@ public class TeacherScheduleService
 
         ScheduleResponceDto scheduleResponceDto = restTemplate.getForObject(apiRequest, ScheduleResponceDto.class);
 
-        TeacherEntity teacher = new TeacherEntity();
-        teacher.setId(scheduleResponceDto.getEmployeeDto().getId());
-        teacher.setFirstName(scheduleResponceDto.getEmployeeDto().getFirstName());
-        teacher.setLastName(scheduleResponceDto.getEmployeeDto().getLastName());
-        teacher.setEmail(scheduleResponceDto.getEmployeeDto().getEmail());
+        if (scheduleResponceDto != null)
+        {
+            TeacherEntity teacher = new TeacherEntity();
+            teacher.setId(scheduleResponceDto.getEmployeeDto().getId());
+            teacher.setFirstName(scheduleResponceDto.getEmployeeDto().getFirstName());
+            teacher.setLastName(scheduleResponceDto.getEmployeeDto().getLastName());
+            teacher.setEmail(scheduleResponceDto.getEmployeeDto().getEmail());
 
-        teacherScheduleRepository.save(teacher);
+            teacherScheduleRepository.save(teacher);
+        } else
+            return null;
 
         return scheduleResponceDto;
     }
