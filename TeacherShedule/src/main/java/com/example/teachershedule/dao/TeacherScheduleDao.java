@@ -7,13 +7,12 @@ import org.springframework.web.client.RestTemplate;
 @Repository
 public class TeacherScheduleDao
 {
-    public ScheduleResponceDto searchTeacherSchedule(String idName)
+    public ScheduleResponceDto searchTeacherSchedule(String apiUrl, String teacherId)
     {
-        String apiUrl = "https://iis.bsuir.by/api/v1/employees/schedule/"
-                + idName;
+        String apiRequest = apiUrl + teacherId;
 
         RestTemplate restTemplate = new RestTemplate();
 
-        return restTemplate.getForObject(apiUrl, ScheduleResponceDto.class);
+        return restTemplate.getForObject(apiRequest, ScheduleResponceDto.class);
     }
 }
