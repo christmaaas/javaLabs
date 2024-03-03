@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class ScheduleResponceDto
+public class ScheduleResponseDto
 {
     private EmployeeDto employeeDto;
     private Map<String, List<ScheduleDto>> schedules;

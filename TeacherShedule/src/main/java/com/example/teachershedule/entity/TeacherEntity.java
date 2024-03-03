@@ -1,19 +1,14 @@
 package com.example.teachershedule.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "info_about_request")
-public class TeacherEntity
-{
+@Table(name = "teacher")
+public class TeacherEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int  id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "firstName")
     private String firstName;
@@ -24,35 +19,48 @@ public class TeacherEntity
     @Column(name = "email")
     private String email;
 
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    private List<LessonEntity> lessons;
+
+    // Геттеры и сеттеры
+
     public int getId() {
         return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<LessonEntity> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(List<LessonEntity> lessons) {
+        this.lessons = lessons;
     }
 }

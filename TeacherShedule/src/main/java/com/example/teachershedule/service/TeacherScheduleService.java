@@ -1,40 +1,98 @@
 package com.example.teachershedule.service;
 
-import com.example.teachershedule.dto.ScheduleResponceDto;
+import com.example.teachershedule.dao.LessonRepository;
+import com.example.teachershedule.dto.ScheduleDto;
+import com.example.teachershedule.dto.ScheduleResponseDto;
+import com.example.teachershedule.entity.LessonEntity;
 import com.example.teachershedule.entity.TeacherEntity;
 import com.example.teachershedule.dao.TeacherScheduleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class TeacherScheduleService
 {
     private final TeacherScheduleRepository teacherScheduleRepository;
+    private final LessonRepository lessonRepository;
 
-    public TeacherScheduleService(TeacherScheduleRepository teacherScheduleRepository) {
+    public TeacherScheduleService(TeacherScheduleRepository teacherScheduleRepository,
+                                  LessonRepository lessonRepository)
+    {
         this.teacherScheduleRepository = teacherScheduleRepository;
+        this.lessonRepository = lessonRepository;
     }
 
-    public ScheduleResponceDto searchTeacherSchedule(String teacherId)
+    public ScheduleResponseDto searchTeacherSchedule(String teacherId)
     {
         String apiRequest = "https://iis.bsuir.by/api/v1/employees/schedule/" + teacherId;
 
         RestTemplate restTemplate = new RestTemplate();
 
-        ScheduleResponceDto scheduleResponceDto = restTemplate.getForObject(apiRequest, ScheduleResponceDto.class);
+        ScheduleResponseDto scheduleResponseDto = restTemplate.getForObject(apiRequest, ScheduleResponseDto.class);
 
-        if (scheduleResponceDto != null)
+        if (scheduleResponseDto != null)
         {
-            TeacherEntity teacher = new TeacherEntity();
-            teacher.setId(scheduleResponceDto.getEmployeeDto().getId());
-            teacher.setFirstName(scheduleResponceDto.getEmployeeDto().getFirstName());
-            teacher.setLastName(scheduleResponceDto.getEmployeeDto().getLastName());
-            teacher.setEmail(scheduleResponceDto.getEmployeeDto().getEmail());
+            TeacherEntity teacherEntity = teacherScheduleRepository
+                    .findByEmail(scheduleResponseDto.getEmployeeDto().getEmail());
 
-            teacherScheduleRepository.save(teacher);
+            if(teacherEntity == null)
+            {
+                teacherEntity = new TeacherEntity();
+                teacherEntity.setId(scheduleResponseDto.getEmployeeDto().getId());
+                teacherEntity.setFirstName(scheduleResponseDto.getEmployeeDto().getFirstName());
+                teacherEntity.setLastName(scheduleResponseDto.getEmployeeDto().getLastName());
+                teacherEntity.setEmail(scheduleResponseDto.getEmployeeDto().getEmail());
+
+                teacherScheduleRepository.save(teacherEntity);
+
+                for (List<ScheduleDto> scheduleList : scheduleResponseDto.getSchedules().values()) {
+                    for (ScheduleDto schedule : scheduleList) {
+                        LessonEntity lessonEntity = new LessonEntity();
+                        lessonEntity.setSubject(schedule.getSubject());
+                        lessonEntity.setTime(schedule.getStartLessonTime());
+                        lessonEntity.setTeacher(teacherEntity);
+
+                        lessonRepository.save(lessonEntity);
+                    }
+                }
+            }
         } else
             return null;
 
-        return scheduleResponceDto;
+        return scheduleResponseDto;
+    }
+
+    public TeacherEntity createSchedule(TeacherEntity teacherEntity) {
+        if (teacherEntity == null || teacherScheduleRepository.findByEmail(teacherEntity.getEmail()) != null) {
+            throw new IllegalArgumentException("error");
+        }
+
+        return teacherScheduleRepository.save(teacherEntity);
+    }
+
+    public TeacherEntity updateSchedule(int id, TeacherEntity teacherEntity) {
+        if (teacherEntity == null || teacherScheduleRepository.findByEmail(teacherEntity.getEmail()) != null) {
+            throw new IllegalArgumentException("error");
+        }
+
+        Optional<TeacherEntity> existingEntityOptional = teacherScheduleRepository.findById(id);
+        if (existingEntityOptional.isEmpty()) {
+            throw new IllegalArgumentException("id=" + id + " not found");
+        }
+
+        TeacherEntity existingEntity = existingEntityOptional.get();
+
+        existingEntity.setFirstName(teacherEntity.getFirstName());
+        existingEntity.setLastName(teacherEntity.getLastName());
+        existingEntity.setEmail(teacherEntity.getEmail());
+
+        return teacherScheduleRepository.save(existingEntity);
+    }
+
+    public void deleteSchedule(int id) {
+        teacherScheduleRepository.deleteById(id);
     }
 }
