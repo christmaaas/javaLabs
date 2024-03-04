@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 public class LessonController {
     private final LessonService lessonService;
 
+    private static final String SUCCESS = "success";
+
     @Autowired
     public LessonController(LessonService lessonService) {
         this.lessonService = lessonService;
@@ -27,19 +29,19 @@ public class LessonController {
         try {
             lessonService.addLesson(lessonEntity, teacher);
 
-            return ResponseEntity.ok("success");
+            return ResponseEntity.ok(SUCCESS);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error: " + e.getMessage());
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public LessonDto  getLessonById(@PathVariable int id) {
 
         return lessonService.getLessonById(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<String> updateLesson(@PathVariable("id") int id,
                                                @RequestBody LessonEntity lessonEntity) {
         if (lessonEntity == null) {
@@ -48,15 +50,19 @@ public class LessonController {
 
         try {
             lessonService.updateLesson(id, lessonEntity);
-            return ResponseEntity.ok("success");
+            return ResponseEntity.ok(SUCCESS);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteLesson(@PathVariable int id) {
-        lessonService.deleteLesson(id);
-        return "Lesson with ID: " + id + " has been deleted successfully";
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteLesson(@PathVariable int id) {
+        try {
+            lessonService.deleteLesson(id);
+            return ResponseEntity.ok(SUCCESS);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

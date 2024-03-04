@@ -39,9 +39,15 @@ public class LessonService {
         }
     }
 
-    public LessonDto  getLessonById(int id) {
-        LessonEntity lessonEntity = lessonRepository.getById(id);
-        return convertToDto(lessonEntity);
+    public LessonDto getLessonById(int id) {
+
+        Optional<LessonEntity> auditoryOptional = lessonRepository.findById(id);
+
+        if (auditoryOptional.isPresent()) {
+            return convertToDto(auditoryOptional.get());
+        } else {
+            return null;
+        }
     }
 
     public LessonEntity updateLesson(int id, LessonEntity lessonEntity) {
@@ -69,8 +75,10 @@ public class LessonService {
 
     private LessonDto convertToDto(LessonEntity lessonEntity) {
         LessonDto lessonDto = new LessonDto();
+        lessonDto.setId(lessonEntity.getId());
         lessonDto.setTime(lessonEntity.getTime());
         lessonDto.setSubject(lessonEntity.getSubject());
+        lessonDto.setTeacherId(lessonEntity.getTeacher().getId());
         return lessonDto;
     }
 }

@@ -42,7 +42,7 @@ public class TeacherScheduleController
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<String> updateSchedule(@PathVariable("id") int id, @RequestBody TeacherEntity teacherEntity) {
         if (teacherEntity == null) {
             return ResponseEntity.badRequest().body("error");
@@ -57,7 +57,7 @@ public class TeacherScheduleController
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteSchedule(@PathVariable("id") int id) {
         try {
             teacherScheduleService.deleteSchedule(id);
