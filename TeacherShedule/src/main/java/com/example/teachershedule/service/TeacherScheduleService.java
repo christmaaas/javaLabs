@@ -1,8 +1,11 @@
 package com.example.teachershedule.service;
 
+import com.example.teachershedule.dao.GroupRepository;
 import com.example.teachershedule.dao.LessonRepository;
 import com.example.teachershedule.dto.ScheduleDto;
 import com.example.teachershedule.dto.ScheduleResponseDto;
+import com.example.teachershedule.dto.StudentGroupDto;
+import com.example.teachershedule.entity.GroupEntity;
 import com.example.teachershedule.entity.LessonEntity;
 import com.example.teachershedule.entity.TeacherEntity;
 import com.example.teachershedule.dao.TeacherScheduleRepository;
@@ -18,12 +21,15 @@ public class TeacherScheduleService
 {
     private final TeacherScheduleRepository teacherScheduleRepository;
     private final LessonRepository lessonRepository;
+    private final GroupRepository groupRepository;
 
     public TeacherScheduleService(TeacherScheduleRepository teacherScheduleRepository,
-                                  LessonRepository lessonRepository)
+                                  LessonRepository lessonRepository,
+                                  GroupRepository groupRepository)
     {
         this.teacherScheduleRepository = teacherScheduleRepository;
         this.lessonRepository = lessonRepository;
+        this.groupRepository = groupRepository;
     }
 
     public ScheduleResponseDto searchTeacherSchedule(String teacherId)
@@ -74,9 +80,41 @@ public class TeacherScheduleService
                 lessonEntity.setTeacher(teacherEntity);
 
                 lessonRepository.save(lessonEntity);
+
+                saveGroup(scheduleResponseDto, lessonEntity);
             }
         }
     }
+
+    private void saveGroup(ScheduleResponseDto scheduleResponseDto, LessonEntity lessonEntity) {
+        for (Map.Entry<String, List<ScheduleDto>> entry : scheduleResponseDto.getSchedules().entrySet())
+        {
+            List<ScheduleDto> scheduleList = entry.getValue();
+
+            for (ScheduleDto schedule : scheduleList) {
+                for(StudentGroupDto studentGroupDto : schedule.getStudentGroups())
+                {
+                    GroupEntity groupEntity = groupRepository.findByName(String.valueOf(studentGroupDto.getName()));
+
+                    if(groupEntity == null) {
+                        groupEntity = new GroupEntity();
+                        groupEntity.setSpecialityName(studentGroupDto.getSpecialityName());
+                        groupEntity.setSpecialityCode(studentGroupDto.getSpecialityCode());
+                        groupEntity.setName(String.valueOf(studentGroupDto.getName()));
+                        groupEntity.setNumberOfStudents(studentGroupDto.getNumberOfStudents());
+                        groupEntity.setEducationDegree(studentGroupDto.getEducationDegree());
+
+                        groupEntity.getLessons().add(lessonEntity);
+
+                        groupRepository.save(groupEntity);
+                    } else {
+                        groupEntity.getLessons().add(lessonEntity);
+                    }
+                }
+            }
+        }
+    }
+
 
     public TeacherEntity createSchedule(TeacherEntity teacherEntity) {
         if (teacherEntity == null || teacherScheduleRepository.findByEmail(teacherEntity.getEmail()) != null) {

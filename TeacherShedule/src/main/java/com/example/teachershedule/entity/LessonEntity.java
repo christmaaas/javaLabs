@@ -2,6 +2,8 @@ package com.example.teachershedule.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "lesson")
 public class LessonEntity {
@@ -24,6 +26,9 @@ public class LessonEntity {
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private TeacherEntity teacher;
+
+    @ManyToMany(mappedBy = "lessons")
+    private List<GroupEntity> groups;
 
     // Геттеры и сеттеры
 
@@ -73,5 +78,13 @@ public class LessonEntity {
 
     public void setTeacher(TeacherEntity teacher) {
         this.teacher = teacher;
+    }
+
+    public List<GroupEntity> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<GroupEntity> groups) {
+        this.groups = groups;
     }
 }
