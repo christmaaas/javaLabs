@@ -3,6 +3,8 @@ package com.example.teachershedule.dto;
 public class LessonDto {
     private int id;
     private String subject;
+    private String subjectFull;
+    private String day;
     private String time;
     private int teacherId;
 
@@ -20,6 +22,22 @@ public class LessonDto {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getSubjectFull() {
+        return subjectFull;
+    }
+
+    public void setSubjectFull(String subjectFull) {
+        this.subjectFull = subjectFull;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
     }
 
     public String getTime() {

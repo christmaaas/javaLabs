@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -43,26 +44,38 @@ public class TeacherScheduleService
                 teacherEntity = new TeacherEntity();
                 teacherEntity.setId(scheduleResponseDto.getEmployeeDto().getId());
                 teacherEntity.setFirstName(scheduleResponseDto.getEmployeeDto().getFirstName());
+                teacherEntity.setMiddleName(scheduleResponseDto.getEmployeeDto().getMiddleName());
                 teacherEntity.setLastName(scheduleResponseDto.getEmployeeDto().getLastName());
                 teacherEntity.setEmail(scheduleResponseDto.getEmployeeDto().getEmail());
 
                 teacherScheduleRepository.save(teacherEntity);
 
-                for (List<ScheduleDto> scheduleList : scheduleResponseDto.getSchedules().values()) {
-                    for (ScheduleDto schedule : scheduleList) {
-                        LessonEntity lessonEntity = new LessonEntity();
-                        lessonEntity.setSubject(schedule.getSubject());
-                        lessonEntity.setTime(schedule.getStartLessonTime());
-                        lessonEntity.setTeacher(teacherEntity);
-
-                        lessonRepository.save(lessonEntity);
-                    }
-                }
+                saveLessons(scheduleResponseDto, teacherEntity);
             }
         } else
             return null;
 
         return scheduleResponseDto;
+    }
+
+    private void saveLessons(ScheduleResponseDto scheduleResponseDto, TeacherEntity teacherEntity)
+    {
+        for (Map.Entry<String, List<ScheduleDto>> entry : scheduleResponseDto.getSchedules().entrySet()) {
+
+            String key = entry.getKey();
+            List<ScheduleDto> scheduleList = entry.getValue();
+
+            for (ScheduleDto schedule : scheduleList) {
+                LessonEntity lessonEntity = new LessonEntity();
+                lessonEntity.setSubject(schedule.getSubject());
+                lessonEntity.setSubjectFull(schedule.getSubjectFullName());
+                lessonEntity.setDay(key);
+                lessonEntity.setTime(schedule.getStartLessonTime());
+                lessonEntity.setTeacher(teacherEntity);
+
+                lessonRepository.save(lessonEntity);
+            }
+        }
     }
 
     public TeacherEntity createSchedule(TeacherEntity teacherEntity) {

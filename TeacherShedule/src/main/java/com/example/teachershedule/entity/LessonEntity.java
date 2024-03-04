@@ -12,6 +12,12 @@ public class LessonEntity {
     @Column(name = "subject")
     private String subject;
 
+    @Column(name = "subject_full")
+    private String subjectFull;
+
+    @Column(name = "day")
+    private String day;
+
     @Column(name = "time")
     private String time;
 
@@ -35,6 +41,22 @@ public class LessonEntity {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public void setSubjectFull(String subjectFull) {
+        this.subjectFull = subjectFull;
+    }
+
+    public String getSubjectFull() {
+        return subjectFull;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public String getDay() {
+        return day;
     }
 
     public String getTime() {

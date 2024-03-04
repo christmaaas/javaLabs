@@ -13,13 +13,16 @@ public class TeacherEntity {
     @Column(name = "firstName")
     private String firstName;
 
+    @Column(name = "middleName")
+    private String middleName;
+
     @Column(name = "lastName")
     private String lastName;
 
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.REMOVE)
     private List<LessonEntity> lessons;
 
     // Геттеры и сеттеры
@@ -38,6 +41,14 @@ public class TeacherEntity {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     public String getLastName() {

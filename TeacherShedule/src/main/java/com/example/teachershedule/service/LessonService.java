@@ -78,6 +78,8 @@ public class LessonService {
         lessonDto.setId(lessonEntity.getId());
         lessonDto.setTime(lessonEntity.getTime());
         lessonDto.setSubject(lessonEntity.getSubject());
+        lessonDto.setSubjectFull(lessonEntity.getSubjectFull());
+        lessonDto.setDay(lessonEntity.getDay());
         lessonDto.setTeacherId(lessonEntity.getTeacher().getId());
         return lessonDto;
     }
