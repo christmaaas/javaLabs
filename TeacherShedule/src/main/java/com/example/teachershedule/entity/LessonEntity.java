@@ -30,8 +30,6 @@ public class LessonEntity {
     @ManyToMany(mappedBy = "lessons")
     private List<GroupEntity> groups;
 
-    // Геттеры и сеттеры
-
     public int getId() {
         return id;
     }

@@ -14,6 +14,7 @@ public class LessonController {
     private final LessonService lessonService;
 
     private static final String SUCCESS = "success";
+    private static final String ERROR = "error";
 
     @Autowired
     public LessonController(LessonService lessonService) {
@@ -24,14 +25,14 @@ public class LessonController {
     public ResponseEntity<String> addLesson(@RequestBody LessonEntity lessonEntity,
                                             @PathVariable("teacher") String teacher) {
         if (lessonEntity == null) {
-            return ResponseEntity.badRequest().body("error");
+            return ResponseEntity.badRequest().body(ERROR);
         }
         try {
             lessonService.addLesson(lessonEntity, teacher);
 
             return ResponseEntity.ok(SUCCESS);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ERROR + ": " + e.getMessage());
         }
     }
 
@@ -45,14 +46,14 @@ public class LessonController {
     public ResponseEntity<String> updateLesson(@PathVariable("id") int id,
                                                @RequestBody LessonEntity lessonEntity) {
         if (lessonEntity == null) {
-            return ResponseEntity.badRequest().body("error");
+            return ResponseEntity.badRequest().body(ERROR);
         }
 
         try {
             lessonService.updateLesson(id, lessonEntity);
             return ResponseEntity.ok(SUCCESS);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ERROR + " " + e.getMessage());
         }
     }
 

@@ -13,6 +13,8 @@ import java.util.Optional;
 public class GroupService {
     private final GroupRepository groupRepository;
 
+    private static final String ERROR = "error";
+
     @Autowired
     public GroupService(GroupRepository groupRepository) {
         this.groupRepository = groupRepository;
@@ -20,7 +22,7 @@ public class GroupService {
 
     public GroupEntity addGroup(GroupEntity groupEntity, String name) {
         if (groupEntity == null) {
-            throw new IllegalArgumentException("error");
+            throw new IllegalArgumentException(ERROR);
         }
 
         GroupEntity groupEntity2 = groupRepository.findByName(name);
@@ -29,7 +31,7 @@ public class GroupService {
 
             return groupRepository.save(groupEntity);
         } else {
-            throw new IllegalArgumentException("error");
+            throw new IllegalArgumentException(ERROR);
         }
     }
 
@@ -46,7 +48,7 @@ public class GroupService {
 
     public GroupEntity updateGroup(int id, GroupEntity groupEntity) {
         if (groupEntity == null) {
-            throw new IllegalArgumentException("error");
+            throw new IllegalArgumentException(ERROR);
         }
 
         Optional<GroupEntity> existingEntityOptional = groupRepository.findById(id);

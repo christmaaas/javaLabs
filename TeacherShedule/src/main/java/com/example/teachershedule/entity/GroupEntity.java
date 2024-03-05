@@ -27,7 +27,7 @@ public class GroupEntity {
     @Column(name = "education_degree")
     private int educationDegree;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "lesson_group",
             joinColumns = @JoinColumn(name = "group_id"),
