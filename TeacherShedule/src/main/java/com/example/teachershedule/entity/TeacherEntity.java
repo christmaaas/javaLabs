@@ -25,6 +25,8 @@ public class TeacherEntity {
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.REMOVE)
     private List<LessonEntity> lessons;
 
+    // Геттеры и сеттеры
+
     public int getId() {
         return id;
     }

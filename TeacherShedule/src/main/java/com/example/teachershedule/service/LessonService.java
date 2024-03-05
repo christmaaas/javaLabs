@@ -64,6 +64,8 @@ public class LessonService {
 
         existingEntity.setSubject(lessonEntity.getSubject());
         existingEntity.setTime(lessonEntity.getTime());
+        existingEntity.setDay(lessonEntity.getDay());
+        existingEntity.setSubjectFull(lessonEntity.getSubjectFull());
 
         return lessonRepository.save(existingEntity);
 
