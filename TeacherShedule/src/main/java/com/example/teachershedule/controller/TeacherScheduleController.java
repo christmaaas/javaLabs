@@ -4,6 +4,8 @@ import com.example.teachershedule.cache.ResponseCache;
 import com.example.teachershedule.dto.ScheduleResponseDto;
 import com.example.teachershedule.entity.TeacherEntity;
 import com.example.teachershedule.service.TeacherScheduleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +19,8 @@ public class TeacherScheduleController
 {
     private final TeacherScheduleService teacherScheduleService;
     private final ResponseCache responseCache;
-
     private static final String ACTION = "success";
+    private static final Logger logger = LoggerFactory.getLogger(TeacherScheduleController.class);
 
     public TeacherScheduleController(TeacherScheduleService teacherScheduleService,
                                      ResponseCache responseCache) {
@@ -29,6 +31,8 @@ public class TeacherScheduleController
     @GetMapping("/get")
     public ScheduleResponseDto getEmployeeSchedule(@RequestParam(value = "teacherId") String teacherId)
     {
+        logger.info("call endpoint /schedule/get");
+
         ScheduleResponseDto scheduleResponseDto = responseCache.getScheduleResponse(teacherId);
 
         if(scheduleResponseDto != null){
@@ -42,6 +46,8 @@ public class TeacherScheduleController
 
     @PostMapping("/add")
     public ResponseEntity<String> createSchedule(@RequestBody TeacherEntity teacherEntity) {
+        logger.info("call endpoint /schedule/add");
+
         if (teacherEntity == null) {
             return ResponseEntity.badRequest().body("error");
         }
@@ -55,7 +61,10 @@ public class TeacherScheduleController
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateSchedule(@PathVariable("id") int id, @RequestBody TeacherEntity teacherEntity) {
+    public ResponseEntity<String> updateSchedule(@PathVariable("id") int id,
+                                                 @RequestBody TeacherEntity teacherEntity) {
+        logger.info("call endpoint /schedule/update");
+
         if (teacherEntity == null) {
             return ResponseEntity.badRequest().body("error");
         }
@@ -71,6 +80,8 @@ public class TeacherScheduleController
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteSchedule(@PathVariable("id") int id) {
+        logger.info("call endpoint /schedule/delete");
+
         try {
             teacherScheduleService.deleteSchedule(id);
 
