@@ -1,5 +1,6 @@
 package com.example.teachershedule.controller;
 
+import com.example.teachershedule.cache.ResponseCache;
 import com.example.teachershedule.dto.ScheduleResponseDto;
 import com.example.teachershedule.entity.TeacherEntity;
 import com.example.teachershedule.service.TeacherScheduleService;
@@ -15,17 +16,28 @@ import org.springframework.web.bind.annotation.*;
 public class TeacherScheduleController
 {
     private final TeacherScheduleService teacherScheduleService;
+    private final ResponseCache responseCache;
 
-    private static final String ACTION = "succes";
+    private static final String ACTION = "success";
 
-    public TeacherScheduleController(TeacherScheduleService teacherScheduleService) {
+    public TeacherScheduleController(TeacherScheduleService teacherScheduleService,
+                                     ResponseCache responseCache) {
         this.teacherScheduleService = teacherScheduleService;
+        this.responseCache = responseCache;
     }
 
     @GetMapping("/get")
     public ScheduleResponseDto getEmployeeSchedule(@RequestParam(value = "teacherId") String teacherId)
     {
-        return teacherScheduleService.searchTeacherSchedule(teacherId);
+        ScheduleResponseDto scheduleResponseDto = responseCache.getScheduleResponse(teacherId);
+
+        if(scheduleResponseDto != null){
+            return scheduleResponseDto;
+        } else {
+            scheduleResponseDto = teacherScheduleService.searchTeacherSchedule(teacherId);
+            responseCache.saveScheduleResponse(teacherId, scheduleResponseDto);
+            return scheduleResponseDto;
+        }
     }
 
     @PostMapping("/add")

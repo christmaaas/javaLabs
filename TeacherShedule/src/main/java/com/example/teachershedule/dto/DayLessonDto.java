@@ -1,20 +1,18 @@
 package com.example.teachershedule.dto;
 
-public class LessonDto {
-    private int id;
+public class DayLessonDto
+{
     private String subject;
     private String subjectFull;
-    private String day;
     private String startTime;
     private String endTime;
-    private int teacherId;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public DayLessonDto(String subject, String subjectFull, String startTime, String endTime)
+    {
+        this.subject = subject;
+        this.subjectFull = subjectFull;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public String getSubject() {
@@ -33,14 +31,6 @@ public class LessonDto {
         this.subjectFull = subjectFull;
     }
 
-    public String getDay() {
-        return day;
-    }
-
-    public void setDay(String day) {
-        this.day = day;
-    }
-
     public String getStartTime() {
         return startTime;
     }
@@ -56,13 +46,4 @@ public class LessonDto {
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
-
-    public int getTeacherId() {
-        return teacherId;
-    }
-
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
-    }
-
 }

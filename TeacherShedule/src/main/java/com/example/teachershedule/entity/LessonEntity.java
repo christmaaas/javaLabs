@@ -18,8 +18,11 @@ public class LessonEntity {
     @Column(name = "day")
     private String day;
 
-    @Column(name = "time")
-    private String time;
+    @Column(name = "start_time")
+    private String startTime;
+
+    @Column(name = "end_time")
+    private String endTime;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
@@ -59,12 +62,20 @@ public class LessonEntity {
         return day;
     }
 
-    public String getTime() {
-        return time;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public TeacherEntity getTeacher() {

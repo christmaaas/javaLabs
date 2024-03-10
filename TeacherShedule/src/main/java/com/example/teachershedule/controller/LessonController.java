@@ -1,5 +1,7 @@
 package com.example.teachershedule.controller;
 
+import com.example.teachershedule.cache.ResponseCache;
+import com.example.teachershedule.dto.DayLessonDto;
 import com.example.teachershedule.dto.LessonDto;
 import com.example.teachershedule.entity.LessonEntity;
 import com.example.teachershedule.service.LessonService;
@@ -8,16 +10,39 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/lessons")
 public class LessonController {
     private final LessonService lessonService;
+    private final ResponseCache responseCache;
 
     private static final String SUCCESS = "success";
 
     @Autowired
-    public LessonController(LessonService lessonService) {
+    public LessonController(LessonService lessonService,
+                            ResponseCache responseCache) {
         this.lessonService = lessonService;
+        this.responseCache = responseCache;
+    }
+
+    @GetMapping("/get/{id}")
+    public LessonDto getLessonById(@PathVariable int id) {
+        LessonDto lessonDto = responseCache.getLessonResponse(id);
+
+        if (lessonDto != null) {
+            return lessonDto;
+        } else {
+            lessonDto = lessonService.getLessonById(id);
+            responseCache.saveLessonResponse(id, lessonDto);
+            return lessonDto;
+        }
+    }
+
+    @GetMapping("/useful")
+    public List<DayLessonDto> getLessonsByTeacherLastNameAndDayOfWeek(@RequestParam("teacherLastName") String teacherLastName, @RequestParam("dayOfWeek") String dayOfWeek) {
+        return lessonService.getLessonsByTeacherLastNameAndDayOfWeek(teacherLastName, dayOfWeek);
     }
 
     @PostMapping("/add/{teacher}")
@@ -33,12 +58,6 @@ public class LessonController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error: " + e.getMessage());
         }
-    }
-
-    @GetMapping("/get/{id}")
-    public LessonDto  getLessonById(@PathVariable int id) {
-
-        return lessonService.getLessonById(id);
     }
 
     @PutMapping("/update/{id}")

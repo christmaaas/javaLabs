@@ -1,5 +1,6 @@
 package com.example.teachershedule.service;
 
+import com.example.teachershedule.dto.DayLessonDto;
 import com.example.teachershedule.dto.LessonDto;
 import com.example.teachershedule.entity.LessonEntity;
 import com.example.teachershedule.entity.TeacherEntity;
@@ -8,7 +9,7 @@ import com.example.teachershedule.dao.TeacherScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,6 +51,10 @@ public class LessonService {
         }
     }
 
+    public List<DayLessonDto> getLessonsByTeacherLastNameAndDayOfWeek(String teacherLastName, String dayOfWeek) {
+        return lessonRepository.findDayLessonsByTeacherLastNameAndDayOfWeek(teacherLastName, dayOfWeek);
+    }
+
     public LessonEntity updateLesson(int id, LessonEntity lessonEntity) {
         if (lessonEntity == null) {
             throw new IllegalArgumentException(ERROR);
@@ -63,7 +68,8 @@ public class LessonService {
         LessonEntity existingEntity = existingEntityOptional.get();
 
         existingEntity.setSubject(lessonEntity.getSubject());
-        existingEntity.setTime(lessonEntity.getTime());
+        existingEntity.setStartTime(lessonEntity.getStartTime());
+        existingEntity.setEndTime(lessonEntity.getEndTime());
         existingEntity.setDay(lessonEntity.getDay());
         existingEntity.setSubjectFull(lessonEntity.getSubjectFull());
 
@@ -78,7 +84,8 @@ public class LessonService {
     private LessonDto convertToDto(LessonEntity lessonEntity) {
         LessonDto lessonDto = new LessonDto();
         lessonDto.setId(lessonEntity.getId());
-        lessonDto.setTime(lessonEntity.getTime());
+        lessonDto.setStartTime(lessonEntity.getStartTime());
+        lessonDto.setEndTime(lessonEntity.getEndTime());
         lessonDto.setSubject(lessonEntity.getSubject());
         lessonDto.setSubjectFull(lessonEntity.getSubjectFull());
         lessonDto.setDay(lessonEntity.getDay());

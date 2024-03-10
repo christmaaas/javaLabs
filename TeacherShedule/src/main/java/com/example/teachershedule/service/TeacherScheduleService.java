@@ -70,7 +70,8 @@ public class TeacherScheduleService
                 lessonEntity.setSubject(schedule.getSubject());
                 lessonEntity.setSubjectFull(schedule.getSubjectFullName());
                 lessonEntity.setDay(key);
-                lessonEntity.setTime(schedule.getStartLessonTime());
+                lessonEntity.setStartTime(schedule.getStartLessonTime());
+                lessonEntity.setEndTime(schedule.getEndLessonTime());
                 lessonEntity.setTeacher(teacherEntity);
 
                 lessonRepository.save(lessonEntity);
