@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/schedule")
-public class TeacherScheduleController
-{
+public class TeacherScheduleController {
     private final TeacherScheduleService teacherScheduleService;
     private final ResponseCache responseCache;
     private static final String ACTION = "success";
@@ -29,13 +28,12 @@ public class TeacherScheduleController
     }
 
     @GetMapping("/get")
-    public ScheduleResponseDto getEmployeeSchedule(@RequestParam(value = "teacherId") String teacherId)
-    {
+    public ScheduleResponseDto getEmployeeSchedule(@RequestParam(value = "teacherId") String teacherId) {
         logger.info("call endpoint /schedule/get");
 
         ScheduleResponseDto scheduleResponseDto = responseCache.getScheduleResponse(teacherId);
 
-        if(scheduleResponseDto != null){
+        if (scheduleResponseDto != null) {
             return scheduleResponseDto;
         } else {
             scheduleResponseDto = teacherScheduleService.searchTeacherSchedule(teacherId);
