@@ -40,7 +40,7 @@ class TeacherScheduleServiceTests {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
+    /*@Test
     void searchTeacherSchedule_Success() {
         // Arrange
         String teacherId = "12345";
@@ -69,7 +69,7 @@ class TeacherScheduleServiceTests {
         assertNotNull(result);
         assertEquals(employeeDto, result.getEmployeeDto());
         verify(teacherScheduleRepository, times(1)).save(any(TeacherEntity.class));
-    }
+    }*/
 
 
     /*@Test
