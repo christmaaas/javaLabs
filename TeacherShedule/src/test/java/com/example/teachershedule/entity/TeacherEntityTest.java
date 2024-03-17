@@ -12,7 +12,6 @@ class TeacherEntityTest {
 
     @Test
     void testTeacherEntityGettersAndSetters() {
-        // Arrange
         TeacherEntity teacherEntity = new TeacherEntity();
         teacherEntity.setId(1);
         teacherEntity.setFirstName("John");
@@ -20,7 +19,6 @@ class TeacherEntityTest {
         teacherEntity.setLastName("Smith");
         teacherEntity.setEmail("john.smith@example.com");
 
-        // Act & Assert
         assertEquals(1, teacherEntity.getId());
         assertEquals("John", teacherEntity.getFirstName());
         assertEquals("Doe", teacherEntity.getMiddleName());
@@ -30,7 +28,6 @@ class TeacherEntityTest {
 
     @Test
     void testTeacherEntityLessonsAssociation() {
-        // Arrange
         TeacherEntity teacherEntity = new TeacherEntity();
         LessonEntity lessonEntity1 = new LessonEntity();
         LessonEntity lessonEntity2 = new LessonEntity();
@@ -41,7 +38,6 @@ class TeacherEntityTest {
 
         teacherEntity.setLessons(lessons);
 
-        // Act & Assert
         assertEquals(2, teacherEntity.getLessons().size());
         assertTrue(teacherEntity.getLessons().contains(lessonEntity1));
         assertTrue(teacherEntity.getLessons().contains(lessonEntity2));

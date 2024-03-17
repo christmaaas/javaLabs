@@ -8,7 +8,6 @@ class LessonEntityTest {
 
     @Test
     void testLessonEntityGettersAndSetters() {
-        // Arrange
         LessonEntity lessonEntity = new LessonEntity();
         lessonEntity.setId(1);
         lessonEntity.setSubject("Math");
@@ -17,7 +16,6 @@ class LessonEntityTest {
         lessonEntity.setStartTime("09:00");
         lessonEntity.setEndTime("10:30");
 
-        // Act & Assert
         assertEquals(1, lessonEntity.getId());
         assertEquals("Math", lessonEntity.getSubject());
         assertEquals("Mathematics", lessonEntity.getSubjectFull());
@@ -28,14 +26,12 @@ class LessonEntityTest {
 
     @Test
     void testLessonEntityTeacherAssociation() {
-        // Arrange
         LessonEntity lessonEntity = new LessonEntity();
         TeacherEntity teacherEntity = new TeacherEntity();
         teacherEntity.setId(1);
         teacherEntity.setFirstName("John");
         lessonEntity.setTeacher(teacherEntity);
 
-        // Act & Assert
         assertEquals(teacherEntity, lessonEntity.getTeacher());
     }
 }

@@ -33,43 +33,34 @@ class LessonCacheTest {
 
     @Test
     void testRemoveLessonResponse() {
-        // Arrange
         int key = 1;
         LessonDto lessonDto = new LessonDto();
         lessonDto.setId(1);
 
-        // Act
         lessonCache.saveLessonResponse(key, lessonDto);
         lessonCache.removeLessonResponse(key);
         LessonDto retrievedLessonDto = lessonCache.getLessonResponse(key);
 
-        // Assert
         assertNull(retrievedLessonDto);
     }
 
     @Test
     void testClearLessonResponses() {
-        // Arrange
         lessonCache.saveLessonResponse(1, new LessonDto());
         lessonCache.saveLessonResponse(2, new LessonDto());
 
-        // Act
         lessonCache.clearLessonResponses();
 
-        // Assert
         assertEquals(0, lessonCache.getSizeOfLessonResponses());
     }
 
     @Test
     void testGetSizeOfLessonResponses() {
-        // Arrange
         lessonCache.saveLessonResponse(1, new LessonDto());
         lessonCache.saveLessonResponse(2, new LessonDto());
 
-        // Act
         int size = lessonCache.getSizeOfLessonResponses();
 
-        // Assert
         assertEquals(2, size);
     }
 }

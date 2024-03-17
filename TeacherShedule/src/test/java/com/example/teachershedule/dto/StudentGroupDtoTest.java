@@ -7,7 +7,6 @@ class StudentGroupDtoTest {
 
     @Test
     void testSettersAndGetters() {
-        // Arrange
         StudentGroupDto studentGroupDto = new StudentGroupDto();
         String specialityName = "Computer Science";
         String specialityCode = "CS";
@@ -15,14 +14,12 @@ class StudentGroupDtoTest {
         int name = 101;
         int educationDegree = 1;
 
-        // Act
         studentGroupDto.setSpecialityName(specialityName);
         studentGroupDto.setSpecialityCode(specialityCode);
         studentGroupDto.setNumberOfStudents(numberOfStudents);
         studentGroupDto.setName(name);
         studentGroupDto.setEducationDegree(educationDegree);
 
-        // Assert
         assertEquals(specialityName, studentGroupDto.getSpecialityName());
         assertEquals(specialityCode, studentGroupDto.getSpecialityCode());
         assertEquals(numberOfStudents, studentGroupDto.getNumberOfStudents());

@@ -12,7 +12,6 @@ class ScheduleResponseDtoTest {
 
     @Test
     void testSetters() {
-        // Arrange
         ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto();
         EmployeeDto employeeDto = new EmployeeDto();
         Map<String, List<ScheduleDto>> schedules = new HashMap<>();
@@ -22,7 +21,6 @@ class ScheduleResponseDtoTest {
         String startExamsDate = "2024-06-01";
         String endExamsDate = "2024-06-15";
 
-        // Act
         scheduleResponseDto.setEmployeeDto(employeeDto);
         scheduleResponseDto.setSchedules(schedules);
         scheduleResponseDto.setExams(exams);
@@ -31,7 +29,6 @@ class ScheduleResponseDtoTest {
         scheduleResponseDto.setStartExamsDate(startExamsDate);
         scheduleResponseDto.setEndExamsDate(endExamsDate);
 
-        // Assert
         assertEquals(employeeDto, scheduleResponseDto.getEmployeeDto());
         assertEquals(schedules, scheduleResponseDto.getSchedules());
         assertEquals(exams, scheduleResponseDto.getExams());

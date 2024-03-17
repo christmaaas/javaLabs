@@ -28,59 +28,47 @@ class TeacherScheduleControllerTest {
 
     @Test
     void testGetEmployeeSchedule() {
-        // Arrange
         String teacherId = "1";
         ScheduleResponseDto expectedResponseDto = new ScheduleResponseDto();
         when(responseCache.getScheduleResponse(teacherId)).thenReturn(expectedResponseDto);
 
-        // Act
         ScheduleResponseDto actualResponseDto = teacherScheduleController.getEmployeeSchedule(teacherId);
 
-        // Assert
         assertEquals(expectedResponseDto, actualResponseDto);
     }
 
     @Test
     void testCreateSchedule() {
-        // Arrange
         TeacherEntity teacherEntity = new TeacherEntity();
         teacherEntity.setId(1);
         ResponseEntity<String> expectedResponseEntity = ResponseEntity.ok("success");
         when(teacherScheduleService.createSchedule(teacherEntity)).thenReturn(teacherEntity);
 
-        // Act
         ResponseEntity<String> actualResponseEntity = teacherScheduleController.createSchedule(teacherEntity);
 
-        // Assert
         assertEquals(expectedResponseEntity, actualResponseEntity);
     }
 
     @Test
     void testUpdateSchedule() {
-        // Arrange
         int id = 1;
         TeacherEntity teacherEntity = new TeacherEntity();
         teacherEntity.setId(id);
         ResponseEntity<String> expectedResponseEntity = ResponseEntity.ok("success");
         when(teacherScheduleService.updateSchedule(id, teacherEntity)).thenReturn(teacherEntity);
 
-        // Act
         ResponseEntity<String> actualResponseEntity = teacherScheduleController.updateSchedule(id, teacherEntity);
 
-        // Assert
         assertEquals(expectedResponseEntity, actualResponseEntity);
     }
 
     @Test
     void testDeleteSchedule() {
-        // Arrange
         int id = 1;
         ResponseEntity<String> expectedResponseEntity = ResponseEntity.ok("success");
 
-        // Act
         ResponseEntity<String> actualResponseEntity = teacherScheduleController.deleteSchedule(id);
 
-        // Assert
         assertEquals(expectedResponseEntity, actualResponseEntity);
     }
 }

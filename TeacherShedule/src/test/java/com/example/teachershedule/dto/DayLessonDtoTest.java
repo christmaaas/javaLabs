@@ -7,16 +7,13 @@ class DayLessonDtoTest {
 
     @Test
     void testConstructorAndGetters() {
-        // Arrange
         String subject = "Math";
         String subjectFull = "Mathematics";
         String startTime = "09:00";
         String endTime = "10:30";
 
-        // Act
         DayLessonDto dayLessonDto = new DayLessonDto(subject, subjectFull, startTime, endTime);
 
-        // Assert
         assertEquals(subject, dayLessonDto.getSubject());
         assertEquals(subjectFull, dayLessonDto.getSubjectFull());
         assertEquals(startTime, dayLessonDto.getStartTime());
@@ -25,10 +22,8 @@ class DayLessonDtoTest {
 
     @Test
     void testSetters() {
-        // Arrange
         DayLessonDto dayLessonDto = new DayLessonDto("", "", "", "");
 
-        // Act
         String subject = "Biology";
         String subjectFull = "Biology - Advanced";
         String startTime = "13:00";
@@ -39,7 +34,6 @@ class DayLessonDtoTest {
         dayLessonDto.setStartTime(startTime);
         dayLessonDto.setEndTime(endTime);
 
-        // Assert
         assertEquals(subject, dayLessonDto.getSubject());
         assertEquals(subjectFull, dayLessonDto.getSubjectFull());
         assertEquals(startTime, dayLessonDto.getStartTime());

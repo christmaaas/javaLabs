@@ -7,7 +7,6 @@ class EmployeeDtoTest {
 
     @Test
     void testSettersAndGetters() {
-        // Arrange
         EmployeeDto employeeDto = new EmployeeDto();
         int id = 1;
         String firstName = "John";
@@ -21,7 +20,6 @@ class EmployeeDtoTest {
         String urlId = "john.smith";
         String calendarId = "john.smith@example.com";
 
-        // Act
         employeeDto.setId(id);
         employeeDto.setFirstName(firstName);
         employeeDto.setMiddleName(middleName);
@@ -34,7 +32,6 @@ class EmployeeDtoTest {
         employeeDto.setUrlId(urlId);
         employeeDto.setCalendarId(calendarId);
 
-        // Assert
         assertEquals(id, employeeDto.getId());
         assertEquals(firstName, employeeDto.getFirstName());
         assertEquals(middleName, employeeDto.getMiddleName());

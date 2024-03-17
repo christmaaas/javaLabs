@@ -10,7 +10,6 @@ class ScheduleDtoTest {
 
     @Test
     void testSettersAndGetters() {
-        // Arrange
         ScheduleDto scheduleDto = new ScheduleDto();
         List<String> auditories = new ArrayList<>();
         auditories.add("Auditory 1");
@@ -35,7 +34,6 @@ class ScheduleDtoTest {
         boolean announcement = true;
         boolean split = false;
 
-        // Act
         scheduleDto.setAuditories(auditories);
         scheduleDto.setEndLessonTime(endLessonTime);
         scheduleDto.setLessonTypeAbbrev(lessonTypeAbbrev);
@@ -52,7 +50,6 @@ class ScheduleDtoTest {
         scheduleDto.setAnnouncement(announcement);
         scheduleDto.setSplit(split);
 
-        // Assert
         assertEquals(auditories, scheduleDto.getAuditories());
         assertEquals(endLessonTime, scheduleDto.getEndLessonTime());
         assertEquals(lessonTypeAbbrev, scheduleDto.getLessonTypeAbbrev());

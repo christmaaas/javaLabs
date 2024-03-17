@@ -7,7 +7,6 @@ class LessonDtoTest {
 
     @Test
     void testSettersAndGetters() {
-        // Arrange
         LessonDto lessonDto = new LessonDto();
         int id = 1;
         String subject = "Math";
@@ -17,7 +16,6 @@ class LessonDtoTest {
         String endTime = "10:30";
         int teacherId = 101;
 
-        // Act
         lessonDto.setId(id);
         lessonDto.setSubject(subject);
         lessonDto.setSubjectFull(subjectFull);
@@ -26,7 +24,6 @@ class LessonDtoTest {
         lessonDto.setEndTime(endTime);
         lessonDto.setTeacherId(teacherId);
 
-        // Assert
         assertEquals(id, lessonDto.getId());
         assertEquals(subject, lessonDto.getSubject());
         assertEquals(subjectFull, lessonDto.getSubjectFull());
