@@ -6,11 +6,14 @@ import com.example.teachershedule.entity.LessonEntity;
 import com.example.teachershedule.entity.TeacherEntity;
 import com.example.teachershedule.dao.LessonRepository;
 import com.example.teachershedule.dao.TeacherScheduleRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LessonService {
@@ -18,6 +21,9 @@ public class LessonService {
     private final TeacherScheduleRepository teacherRepository;
 
     private static final String ERROR = "error";
+
+    private static final Logger logger = LoggerFactory.getLogger(LessonService.class);
+
 
     @Autowired
     public LessonService(LessonRepository lessonRepository, TeacherScheduleRepository teacherRepository) {
@@ -38,6 +44,26 @@ public class LessonService {
         } else {
             throw new IllegalArgumentException(ERROR);
         }
+    }
+
+    public void addLessons(List<LessonEntity> lessonEntities, String teacher) {
+        if (lessonEntities == null || lessonEntities.isEmpty()) {
+            throw new IllegalArgumentException(ERROR);
+        }
+
+        TeacherEntity teacherEntity = teacherRepository.findByLastName(teacher);
+        if (teacherEntity == null) {
+            throw new IllegalArgumentException(ERROR);
+        }
+
+        lessonEntities.stream()
+                .map(lessonEntity -> {
+                    lessonEntity.setTeacher(teacherEntity);
+                    return lessonRepository.save(lessonEntity);
+                })
+                .forEach(savedLessonEntity -> {
+                    logger.info("Lesson saved ID: {}", savedLessonEntity.getId());
+                });
     }
 
     public LessonDto getLessonById(int id) {

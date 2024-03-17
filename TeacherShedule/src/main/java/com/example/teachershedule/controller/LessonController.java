@@ -66,7 +66,22 @@ public class LessonController {
 
             return ResponseEntity.ok(SUCCESS);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("error: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/bulk/{teacher}")
+    public ResponseEntity<String> addLessons(@RequestBody List<LessonEntity> lessonEntities,
+                                             @PathVariable("teacher") String teacher) {
+        logger.info("call endpoint /lessons/bulk");
+
+        try {
+            lessonService.addLessons(lessonEntities, teacher);
+            return ResponseEntity.ok(SUCCESS);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error: " + e.getMessage());
         }
     }
 
@@ -83,7 +98,8 @@ public class LessonController {
             lessonService.updateLesson(id, lessonEntity);
             return ResponseEntity.ok(SUCCESS);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("error " + e.getMessage());
         }
     }
 

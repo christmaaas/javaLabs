@@ -16,7 +16,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
-                .apis(RequestHandlerSelectors.basePackage("org.javalabs.lab1"))
+                .apis(RequestHandlerSelectors.basePackage("com.examples.teachershedule"))
                 .paths(PathSelectors.regex("/.*"))
                 .build().apiInfo(apiInfoMetaData());
     }
