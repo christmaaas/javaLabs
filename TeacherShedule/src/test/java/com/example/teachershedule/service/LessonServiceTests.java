@@ -90,20 +90,6 @@ class LessonServiceTests {
         assertThrows(IllegalArgumentException.class, () -> lessonService.addLessons(new ArrayList<>(), "Smith"));
     }
 
-    /*@Test
-    void getLessonById_Exists() {
-        // Arrange
-        int lessonId = 1;
-        LessonEntity lessonEntity = new LessonEntity();
-        when(lessonRepository.findById(lessonId)).thenReturn(Optional.of(lessonEntity));
-
-        // Act
-        LessonDto result = lessonService.getLessonById(lessonId);
-
-        // Assert
-        assertNotNull(result);
-    }*/
-
     @Test
     void getLessonById_NotExists() {
         // Arrange
