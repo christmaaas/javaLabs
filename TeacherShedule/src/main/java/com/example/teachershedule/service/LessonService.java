@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class LessonService {
@@ -61,9 +60,8 @@ public class LessonService {
                     lessonEntity.setTeacher(teacherEntity);
                     return lessonRepository.save(lessonEntity);
                 })
-                .forEach(savedLessonEntity -> {
-                    logger.info("Lesson saved ID: {}", savedLessonEntity.getId());
-                });
+                .forEach(savedLessonEntity ->
+                    logger.info("Lesson saved ID: {}", savedLessonEntity.getId()));
     }
 
     public LessonDto getLessonById(int id) {
