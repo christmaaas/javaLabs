@@ -1,61 +1,79 @@
 package com.example.teachershedule.exception;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
+@ExtendWith(MockitoExtension.class)
 class ControllerExceptionHandlerTest {
 
-    /*@Test
+    @InjectMocks
+    private ControllerExceptionHandler controllerExceptionHandler;
+
+    @Test
+    void testHandleIllegalArgumentException() {
+        // Arrange
+        HttpClientErrorException ex = mock(HttpClientErrorException.class);
+        WebRequest request = mock(WebRequest.class);
+
+        // Act
+        ResponseEntity<Object> response = controllerExceptionHandler.handleIllegalArgumentException(ex, request);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("ERROR 400: Bad request", response.getBody());
+    }
+
+    @Test
     void testHandleNoResourceFoundException() {
+        // Arrange
         NoHandlerFoundException ex = mock(NoHandlerFoundException.class);
         WebRequest request = mock(WebRequest.class);
 
-        ControllerExceptionHandler handler = new ControllerExceptionHandler();
+        // Act
+        ResponseEntity<Object> response = controllerExceptionHandler.handleNoResourceFoundException(ex, request);
 
-        ResponseEntity<Object> responseEntity = handler.handleNoResourceFoundException(ex, request);
-
-        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        assertEquals("404 Not Found", responseEntity.getBody());
-    }
-
-    @Test
-    void testHandleRuntimeException() {
-        ControllerExceptionHandler handler = new ControllerExceptionHandler();
-        RuntimeException ex = new RuntimeException("Internal Server Error");
-
-        ResponseEntity<Object> response = handler.handleAllExceptions(ex, null);
-
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertTrue(response.getBody().toString().contains("Internal Server Error"));
-    }
-
-    @Test
-    void testHandleHttpClientErrorException() {
-        ControllerExceptionHandler handler = new ControllerExceptionHandler();
-        HttpClientErrorException ex = new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Bad Request");
-
-        ResponseEntity<Object> response = handler.handleIllegalArgumentException(ex, null);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertTrue(response.getBody().toString().contains("Bad Request"));
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("ERROR 404: Not Found", response.getBody());
     }
 
     @Test
     void testHandleMethodNotSupportedException() {
-        ControllerExceptionHandler handler = new ControllerExceptionHandler();
-        HttpRequestMethodNotSupportedException ex = new HttpRequestMethodNotSupportedException("Method Not Allowed");
+        // Arrange
+        HttpRequestMethodNotSupportedException ex = mock(HttpRequestMethodNotSupportedException.class);
+        WebRequest request = mock(WebRequest.class);
 
-        ResponseEntity<Object> response = handler.handleMethodNotSupportedException(ex, null);
+        // Act
+        ResponseEntity<Object> response = controllerExceptionHandler.handleMethodNotSupportedException(ex, request);
 
+        // Assert
         assertEquals(HttpStatus.METHOD_NOT_ALLOWED, response.getStatusCode());
-        assertTrue(response.getBody().toString().contains("Method Not Allowed"));
-    }*/
+        assertEquals("ERROR 405: Method not supported", response.getBody());
+    }
+
+    @Test
+    void testHandleAllExceptions() {
+        // Arrange
+        RuntimeException ex = mock(RuntimeException.class);
+        WebRequest request = mock(WebRequest.class);
+
+        // Act
+        ResponseEntity<Object> response = controllerExceptionHandler.handleAllExceptions(ex, request);
+
+        // Assert
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("ERROR 500: Internal server error", response.getBody());
+    }
 }
+
