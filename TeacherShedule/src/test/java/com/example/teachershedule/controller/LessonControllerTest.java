@@ -98,7 +98,7 @@ class LessonControllerTest {
 
 
     @Test
-    public void testUpdateLesson() {
+    void testUpdateLesson() {
         // Arrange
         int id = 1;
         LessonEntity lessonEntity = new LessonEntity();
@@ -112,7 +112,7 @@ class LessonControllerTest {
     }
 
     @Test
-    public void testDeleteLesson() {
+    void testDeleteLesson() {
         // Arrange
         int id = 1;
         doNothing().when(lessonService).deleteLesson(eq(id));
