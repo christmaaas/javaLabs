@@ -5,6 +5,7 @@ import com.example.teachershedule.dao.TeacherScheduleRepository;
 import com.example.teachershedule.entity.TeacherEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -75,16 +76,20 @@ class TeacherScheduleServiceTests {
         TeacherEntity existingTeacherEntity = new TeacherEntity();
         when(teacherScheduleRepository.findByEmail(anyString())).thenReturn(existingTeacherEntity);
 
-        assertThrows(IllegalArgumentException.class, () -> teacherScheduleService.updateSchedule(id, new TeacherEntity()));
+        Executable updateScheduleExecution = () -> teacherScheduleService.updateSchedule(id, new TeacherEntity());
+        assertThrows(IllegalArgumentException.class, updateScheduleExecution);
     }
+
 
     @Test
     void updateSchedule_TeacherNotFound() {
         int id = 1;
         when(teacherScheduleRepository.findById(id)).thenReturn(java.util.Optional.empty());
 
-        assertThrows(IllegalArgumentException.class, () -> teacherScheduleService.updateSchedule(id, new TeacherEntity()));
+        Executable updateScheduleExecution = () -> teacherScheduleService.updateSchedule(id, new TeacherEntity());
+        assertThrows(IllegalArgumentException.class, updateScheduleExecution);
     }
+
 
     @Test
     void deleteSchedule_Success() {

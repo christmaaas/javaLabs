@@ -99,10 +99,11 @@ class LessonControllerTest {
     @Test
     void testDeleteLesson() {
         int id = 1;
-        doNothing().when(lessonService).deleteLesson(eq(id));
+        doNothing().when(lessonService).deleteLesson(id);
 
         ResponseEntity<String> result = lessonController.deleteLesson(id);
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
+
 }

@@ -132,7 +132,8 @@ class LessonServiceTests {
         int lessonId = 1;
         when(lessonRepository.findById(lessonId)).thenReturn(Optional.empty());
 
-        assertThrows(IllegalArgumentException.class, () -> lessonService.updateLesson(lessonId, new LessonEntity()));
+        Executable updateLessonExecution = () -> lessonService.updateLesson(lessonId, new LessonEntity());
+        assertThrows(IllegalArgumentException.class, updateLessonExecution);
     }
 
     @Test
