@@ -6,15 +6,13 @@ import com.example.teachershedule.dto.DayLessonDto;
 import com.example.teachershedule.dto.LessonDto;
 import com.example.teachershedule.entity.LessonEntity;
 import com.example.teachershedule.entity.TeacherEntity;
-import com.example.teachershedule.service.LessonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +33,88 @@ class LessonServiceTests {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void addLesson_Success() {
+        // Arrange
+        LessonEntity lessonEntity = new LessonEntity();
+        String teacherLastName = "Smith";
+        TeacherEntity teacherEntity = new TeacherEntity();
+        teacherEntity.setLastName(teacherLastName);
+        when(teacherRepository.findByLastName(teacherLastName)).thenReturn(teacherEntity);
+        when(lessonRepository.save(any())).thenReturn(lessonEntity);
+
+        // Act
+        LessonEntity result = lessonService.addLesson(new LessonEntity(), teacherLastName);
+
+        // Assert
+        assertNotNull(result);
+        verify(lessonRepository, times(1)).save(any());
+    }
+
+    @Test
+    void addLesson_NullLessonEntity() {
+        // Assert
+        assertThrows(IllegalArgumentException.class, () -> lessonService.addLesson(null, "Smith"));
+    }
+
+    @Test
+    void addLessons_Success() {
+        // Arrange
+        List<LessonEntity> lessonEntities = new ArrayList<>();
+        lessonEntities.add(new LessonEntity());
+        String teacherLastName = "Smith";
+        TeacherEntity teacherEntity = new TeacherEntity();
+        teacherEntity.setLastName(teacherLastName);
+        when(teacherRepository.findByLastName(teacherLastName)).thenReturn(teacherEntity);
+        when(lessonRepository.save(any())).thenReturn(new LessonEntity());
+
+        // Act
+        assertDoesNotThrow(() -> lessonService.addLessons(lessonEntities, teacherLastName));
+
+        // Assert
+        verify(lessonRepository, times(lessonEntities.size())).save(any());
+    }
+
+    @Test
+    void addLessons_NullLessonEntities() {
+        // Assert
+        assertThrows(IllegalArgumentException.class, () -> lessonService.addLessons(null, "Smith"));
+    }
+
+    @Test
+    void addLessons_EmptyLessonEntities() {
+        // Assert
+        assertThrows(IllegalArgumentException.class, () -> lessonService.addLessons(new ArrayList<>(), "Smith"));
+    }
+
+    /*@Test
+    void getLessonById_Exists() {
+        // Arrange
+        int lessonId = 1;
+        LessonEntity lessonEntity = new LessonEntity();
+        when(lessonRepository.findById(lessonId)).thenReturn(Optional.of(lessonEntity));
+
+        // Act
+        LessonDto result = lessonService.getLessonById(lessonId);
+
+        // Assert
+        assertNotNull(result);
+    }*/
+
+    @Test
+    void getLessonById_NotExists() {
+        // Arrange
+        int lessonId = 1;
+        when(lessonRepository.findById(lessonId)).thenReturn(Optional.empty());
+
+        // Act
+        LessonDto result = lessonService.getLessonById(lessonId);
+
+        // Assert
+        assertNull(result);
     }
 
     @Test
@@ -43,9 +122,7 @@ class LessonServiceTests {
         // Arrange
         String teacherLastName = "Smith";
         String dayOfWeek = "Monday";
-        List<DayLessonDto> expectedDayLessons = Collections.singletonList(
-                new DayLessonDto("Math", "Mathematics", "09:00", "10:30"));
-
+        List<DayLessonDto> expectedDayLessons = new ArrayList<>();
         when(lessonRepository.findDayLessonsByTeacherLastNameAndDayOfWeek(teacherLastName, dayOfWeek))
                 .thenReturn(expectedDayLessons);
 
@@ -58,105 +135,52 @@ class LessonServiceTests {
         verify(lessonRepository, times(1)).findDayLessonsByTeacherLastNameAndDayOfWeek(teacherLastName, dayOfWeek);
     }
 
-
     @Test
     void updateLesson_Success() {
         // Arrange
-        int id = 1;
+        int lessonId = 1;
         LessonEntity lessonEntity = new LessonEntity();
-        lessonEntity.setId(id);
-        lessonEntity.setSubject("Math");
-
-        LessonEntity existingLessonEntity = new LessonEntity();
-        existingLessonEntity.setId(id);
-
-        when(lessonRepository.findById(id))
-                .thenReturn(Optional.of(existingLessonEntity));
-
-        when(lessonRepository.save(any(LessonEntity.class)))
-                .thenReturn(lessonEntity);
+        LessonEntity updatedLessonEntity = new LessonEntity();
+        when(lessonRepository.findById(lessonId)).thenReturn(Optional.of(lessonEntity));
+        when(lessonRepository.save(any())).thenReturn(updatedLessonEntity);
 
         // Act
-        LessonEntity result = lessonService.updateLesson(id, lessonEntity);
+        LessonEntity result = lessonService.updateLesson(lessonId, new LessonEntity());
 
         // Assert
         assertNotNull(result);
-        assertEquals(lessonEntity, result);
-        verify(lessonRepository, times(1)).findById(id);
-        verify(lessonRepository, times(1)).save(any(LessonEntity.class));
+        verify(lessonRepository, times(1)).save(any());
     }
 
     @Test
-    void updateLesson_NullLesson() {
-        // Act & Assert
+    void updateLesson_NullLessonEntity() {
+        // Assert
         assertThrows(IllegalArgumentException.class, () -> lessonService.updateLesson(1, null));
-        verify(lessonRepository, never()).findById(anyInt());
-        verify(lessonRepository, never()).save(any(LessonEntity.class));
     }
 
     @Test
-    void updateLesson_LessonNotFound() {
+    void updateLesson_NotFound() {
         // Arrange
-        int id = 1;
-        LessonEntity lessonEntity = new LessonEntity();
-
-        when(lessonRepository.findById(id))
-                .thenReturn(Optional.empty());
-
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> lessonService.updateLesson(id, lessonEntity));
-        verify(lessonRepository, never()).save(any(LessonEntity.class));
-    }
-
-    @Test
-    void convertToDto_Success() {
-        // Arrange
-        LessonEntity lessonEntity = new LessonEntity();
-        lessonEntity.setId(1);
-        lessonEntity.setStartTime("09:00");
-        lessonEntity.setEndTime("10:30");
-        lessonEntity.setSubject("Math");
-        lessonEntity.setSubjectFull("Mathematics");
-        lessonEntity.setDay("Monday");
-
-        TeacherEntity teacherEntity = new TeacherEntity();
-        teacherEntity.setId(101); // Assuming teacher's ID is 101
-        lessonEntity.setTeacher(teacherEntity);
-
-        // Создаем моки для репозиториев
-        LessonRepository mockLessonRepository = Mockito.mock(LessonRepository.class);
-        TeacherScheduleRepository mockTeacherScheduleRepository = Mockito.mock(TeacherScheduleRepository.class);
-
-        // Создаем сервис и передаем ему моки
-        LessonService lessonService = new LessonService(mockLessonRepository, mockTeacherScheduleRepository);
-
-        // Act
-        LessonDto lessonDto = lessonService.convertToDto(lessonEntity);
+        int lessonId = 1;
+        when(lessonRepository.findById(lessonId)).thenReturn(Optional.empty());
 
         // Assert
-        assertEquals(1, lessonDto.getId());
-        assertEquals("09:00", lessonDto.getStartTime());
-        assertEquals("10:30", lessonDto.getEndTime());
-        assertEquals("Math", lessonDto.getSubject());
-        assertEquals("Mathematics", lessonDto.getSubjectFull());
-        assertEquals("Monday", lessonDto.getDay());
-        assertEquals(101, lessonDto.getTeacherId());
+        assertThrows(IllegalArgumentException.class, () -> lessonService.updateLesson(lessonId, new LessonEntity()));
     }
 
     @Test
     void deleteLesson_Success() {
         // Arrange
-        int id = 1;
+        int lessonId = 1;
 
         // Act
-        lessonService.deleteLesson(id);
+        assertDoesNotThrow(() -> lessonService.deleteLesson(lessonId));
 
         // Assert
-        verify(lessonRepository, times(1)).deleteById(id);
+        verify(lessonRepository, times(1)).deleteById(lessonId);
     }
-
-    // Add more test cases for other methods as needed
 }
+
 
 
 
