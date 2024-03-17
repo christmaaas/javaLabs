@@ -8,6 +8,7 @@ import com.example.teachershedule.entity.LessonEntity;
 import com.example.teachershedule.entity.TeacherEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -77,8 +78,10 @@ class LessonServiceTests {
 
     @Test
     void addLessons_EmptyLessonEntities() {
-        assertThrows(IllegalArgumentException.class, () -> lessonService.addLessons(new ArrayList<>(), "Smith"));
+        Executable addLessonsExecution = () -> lessonService.addLessons(new ArrayList<>(), "Smith");
+        assertThrows(IllegalArgumentException.class, addLessonsExecution);
     }
+
 
     @Test
     void getLessonById_NotExists() {
