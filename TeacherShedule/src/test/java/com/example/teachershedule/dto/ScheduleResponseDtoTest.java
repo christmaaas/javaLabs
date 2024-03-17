@@ -15,7 +15,7 @@ public class ScheduleResponseDtoTest {
         // Arrange
         ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto();
         EmployeeDto employeeDto = new EmployeeDto();
-        Map<String, List<ScheduleDtoTest>> schedules = new HashMap<>();
+        Map<String, List<ScheduleDto>> schedules = new HashMap<>();
         List<ExamDto> exams = new ArrayList<>();
         String startDate = "2024-03-20";
         String endDate = "2024-06-30";
