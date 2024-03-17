@@ -3,10 +3,10 @@ package com.example.teachershedule.dto;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DayLessonDtoTest {
+class DayLessonDtoTest {
 
     @Test
-    public void testConstructorAndGetters() {
+    void testConstructorAndGetters() {
         // Arrange
         String subject = "Math";
         String subjectFull = "Mathematics";
@@ -24,7 +24,7 @@ public class DayLessonDtoTest {
     }
 
     @Test
-    public void testSetters() {
+    void testSetters() {
         // Arrange
         DayLessonDto dayLessonDto = new DayLessonDto("", "", "", "");
 

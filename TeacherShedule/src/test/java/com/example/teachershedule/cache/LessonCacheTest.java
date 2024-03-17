@@ -7,17 +7,17 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class LessonCacheTest {
+class LessonCacheTest {
 
     private LessonCache lessonCache;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         lessonCache = new LessonCache();
     }
 
     @Test
-    public void testSaveAndGetLessonResponse() {
+    void testSaveAndGetLessonResponse() {
         // Arrange
         int key = 1;
         LessonDto lessonDto = new LessonDto();
@@ -32,7 +32,7 @@ public class LessonCacheTest {
     }
 
     @Test
-    public void testRemoveLessonResponse() {
+    void testRemoveLessonResponse() {
         // Arrange
         int key = 1;
         LessonDto lessonDto = new LessonDto();
@@ -48,7 +48,7 @@ public class LessonCacheTest {
     }
 
     @Test
-    public void testClearLessonResponses() {
+    void testClearLessonResponses() {
         // Arrange
         lessonCache.saveLessonResponse(1, new LessonDto());
         lessonCache.saveLessonResponse(2, new LessonDto());
@@ -61,7 +61,7 @@ public class LessonCacheTest {
     }
 
     @Test
-    public void testGetSizeOfLessonResponses() {
+    void testGetSizeOfLessonResponses() {
         // Arrange
         lessonCache.saveLessonResponse(1, new LessonDto());
         lessonCache.saveLessonResponse(2, new LessonDto());

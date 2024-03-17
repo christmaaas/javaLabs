@@ -8,10 +8,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TeacherEntityTest {
+class TeacherEntityTest {
 
     @Test
-    public void testTeacherEntityGettersAndSetters() {
+    void testTeacherEntityGettersAndSetters() {
         // Arrange
         TeacherEntity teacherEntity = new TeacherEntity();
         teacherEntity.setId(1);
@@ -29,7 +29,7 @@ public class TeacherEntityTest {
     }
 
     @Test
-    public void testTeacherEntityLessonsAssociation() {
+    void testTeacherEntityLessonsAssociation() {
         // Arrange
         TeacherEntity teacherEntity = new TeacherEntity();
         LessonEntity lessonEntity1 = new LessonEntity();

@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ExamDtoTest {
+class ExamDtoTest {
 
     @Test
-    public void testSettersAndGetters() {
+    void testSettersAndGetters() {
         // Arrange
         ExamDto examDto = new ExamDto();
         List<String> auditories = new ArrayList<>(Arrays.asList("Auditorium 101", "Auditorium 102"));

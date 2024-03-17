@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LessonEntityTest {
+class LessonEntityTest {
 
     @Test
-    public void testLessonEntityGettersAndSetters() {
+    void testLessonEntityGettersAndSetters() {
         // Arrange
         LessonEntity lessonEntity = new LessonEntity();
         lessonEntity.setId(1);
@@ -27,7 +27,7 @@ public class LessonEntityTest {
     }
 
     @Test
-    public void testLessonEntityTeacherAssociation() {
+    void testLessonEntityTeacherAssociation() {
         // Arrange
         LessonEntity lessonEntity = new LessonEntity();
         TeacherEntity teacherEntity = new TeacherEntity();

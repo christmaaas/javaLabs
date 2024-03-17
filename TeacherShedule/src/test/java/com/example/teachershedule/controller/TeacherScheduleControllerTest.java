@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TeacherScheduleControllerTest {
+class TeacherScheduleControllerTest {
 
     @Mock
     private TeacherScheduleService teacherScheduleService;
@@ -27,7 +27,7 @@ public class TeacherScheduleControllerTest {
     private TeacherScheduleController teacherScheduleController;
 
     @Test
-    public void testGetEmployeeSchedule() {
+    void testGetEmployeeSchedule() {
         // Arrange
         String teacherId = "1";
         ScheduleResponseDto expectedResponseDto = new ScheduleResponseDto();
@@ -41,7 +41,7 @@ public class TeacherScheduleControllerTest {
     }
 
     @Test
-    public void testCreateSchedule() {
+    void testCreateSchedule() {
         // Arrange
         TeacherEntity teacherEntity = new TeacherEntity();
         teacherEntity.setId(1);
@@ -56,7 +56,7 @@ public class TeacherScheduleControllerTest {
     }
 
     @Test
-    public void testUpdateSchedule() {
+    void testUpdateSchedule() {
         // Arrange
         int id = 1;
         TeacherEntity teacherEntity = new TeacherEntity();
@@ -72,7 +72,7 @@ public class TeacherScheduleControllerTest {
     }
 
     @Test
-    public void testDeleteSchedule() {
+    void testDeleteSchedule() {
         // Arrange
         int id = 1;
         ResponseEntity<String> expectedResponseEntity = ResponseEntity.ok("success");

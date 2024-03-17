@@ -7,17 +7,17 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ResponseCacheTest {
+class ResponseCacheTest {
 
     private ResponseCache responseCache;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         responseCache = new ResponseCache();
     }
 
     @Test
-    public void testSaveAndGetScheduleResponse() {
+    void testSaveAndGetScheduleResponse() {
         // Arrange
         String key = "1";
         ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto();
@@ -32,7 +32,7 @@ public class ResponseCacheTest {
     }
 
     @Test
-    public void testRemoveScheduleResponse() {
+    void testRemoveScheduleResponse() {
         // Arrange
         String key = "1";
         ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto();
@@ -48,7 +48,7 @@ public class ResponseCacheTest {
     }
 
     @Test
-    public void testClearScheduleResponses() {
+    void testClearScheduleResponses() {
         // Arrange
         responseCache.saveScheduleResponse("1", new ScheduleResponseDto());
         responseCache.saveScheduleResponse("2", new ScheduleResponseDto());
@@ -61,7 +61,7 @@ public class ResponseCacheTest {
     }
 
     @Test
-    public void testGetSizeOfScheduleResponses() {
+    void testGetSizeOfScheduleResponses() {
         // Arrange
         responseCache.saveScheduleResponse("1", new ScheduleResponseDto());
         responseCache.saveScheduleResponse("2", new ScheduleResponseDto());

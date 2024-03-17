@@ -3,10 +3,10 @@ package com.example.teachershedule.dto;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class StudentGroupDtoTest {
+class StudentGroupDtoTest {
 
     @Test
-    public void testSettersAndGetters() {
+    void testSettersAndGetters() {
         // Arrange
         StudentGroupDto studentGroupDto = new StudentGroupDto();
         String specialityName = "Computer Science";

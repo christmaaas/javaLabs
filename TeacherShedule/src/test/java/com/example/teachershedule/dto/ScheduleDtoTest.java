@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScheduleDtoTest {
+class ScheduleDtoTest {
 
     @Test
-    public void testSettersAndGetters() {
+    void testSettersAndGetters() {
         // Arrange
         ScheduleDto scheduleDto = new ScheduleDto();
         List<String> auditories = new ArrayList<>();

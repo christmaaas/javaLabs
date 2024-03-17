@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-public class LessonControllerTest {
+class LessonControllerTest {
 
     @Mock
     private LessonService lessonService;
@@ -33,12 +33,12 @@ public class LessonControllerTest {
     private LessonController lessonController;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void testGetLessonById() {
+    void testGetLessonById() {
         // Arrange
         int id = 1;
         LessonDto expectedDto = new LessonDto();
@@ -54,7 +54,7 @@ public class LessonControllerTest {
     }
 
     @Test
-    public void testGetLessonsByTeacherLastNameAndDayOfWeek() {
+    void testGetLessonsByTeacherLastNameAndDayOfWeek() {
         // Arrange
         String teacherLastName = "Smith";
         String dayOfWeek = "Monday";
@@ -69,7 +69,7 @@ public class LessonControllerTest {
     }
 
     @Test
-    public void testAddLesson() {
+    void testAddLesson() {
         // Arrange
         LessonEntity lessonEntity = new LessonEntity();
         String teacher = "Smith";
@@ -83,7 +83,7 @@ public class LessonControllerTest {
     }
 
     @Test
-    public void testAddLessons() {
+    void testAddLessons() {
         // Arrange
         List<LessonEntity> lessonEntities = new ArrayList<>();
         String teacher = "Smith";

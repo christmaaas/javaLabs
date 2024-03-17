@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ScheduleResponseDtoTest {
+class ScheduleResponseDtoTest {
 
     @Test
-    public void testSetters() {
+    void testSetters() {
         // Arrange
         ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto();
         EmployeeDto employeeDto = new EmployeeDto();
