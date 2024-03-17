@@ -40,7 +40,7 @@ class TeacherScheduleServiceTests {
         MockitoAnnotations.initMocks(this);
     }
 
-    /*@Test
+    @Test
     void searchTeacherSchedule_Success() {
         // Arrange
         String teacherId = "12345";
@@ -53,8 +53,11 @@ class TeacherScheduleServiceTests {
         when(restTemplate.getForObject(any(String.class), eq(ScheduleResponseDto.class)))
                 .thenReturn(scheduleResponseDto);
 
+        TeacherEntity mockedTeacherEntity = new TeacherEntity();
+        mockedTeacherEntity.setEmail(teacherEmail);
+        // Настройка мока, чтобы он возвращал объект TeacherEntity
         when(teacherScheduleRepository.findByEmail(teacherEmail))
-                .thenReturn(null);
+                .thenReturn(mockedTeacherEntity);
 
         when(teacherScheduleRepository.save(any(TeacherEntity.class)))
                 .thenReturn(new TeacherEntity());
@@ -66,7 +69,8 @@ class TeacherScheduleServiceTests {
         assertNotNull(result);
         assertEquals(employeeDto, result.getEmployeeDto());
         verify(teacherScheduleRepository, times(1)).save(any(TeacherEntity.class));
-    }*/
+    }
+
 
     /*@Test
     void searchTeacherSchedule_TeacherAlreadyExists() {

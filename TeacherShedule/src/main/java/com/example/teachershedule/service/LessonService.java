@@ -105,7 +105,7 @@ public class LessonService {
         lessonRepository.deleteById(id);
     }
 
-    private LessonDto convertToDto(LessonEntity lessonEntity) {
+    public LessonDto convertToDto(LessonEntity lessonEntity) {
         LessonDto lessonDto = new LessonDto();
         lessonDto.setId(lessonEntity.getId());
         lessonDto.setStartTime(lessonEntity.getStartTime());
