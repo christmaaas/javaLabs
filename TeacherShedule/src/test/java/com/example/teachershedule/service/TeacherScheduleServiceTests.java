@@ -228,7 +228,7 @@ class TeacherScheduleServiceTests {
         verify(teacherScheduleRepository, times(1)).deleteById(id);
     }
 
-    /*@Test
+    @Test
     void deleteSchedule_TeacherNotFound() {
         // Arrange
         int id = 1;
@@ -238,7 +238,7 @@ class TeacherScheduleServiceTests {
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> teacherScheduleService.deleteSchedule(id));
         verify(teacherScheduleRepository, never()).deleteById(id);
-    }*/
+    }
 }
 
 
