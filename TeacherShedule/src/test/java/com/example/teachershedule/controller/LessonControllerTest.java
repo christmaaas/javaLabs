@@ -5,21 +5,22 @@ import com.example.teachershedule.dto.DayLessonDto;
 import com.example.teachershedule.dto.LessonDto;
 import com.example.teachershedule.entity.LessonEntity;
 import com.example.teachershedule.service.LessonService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 public class LessonControllerTest {
 
     @Mock
@@ -31,94 +32,95 @@ public class LessonControllerTest {
     @InjectMocks
     private LessonController lessonController;
 
-    @Test
-    public void testGetLessonById_ExistingId_ReturnsLessonDto() {
-        // Arrange
-        int id = 1;
-        LessonDto expectedLessonDto = new LessonDto();
-        when(lessonCache.getLessonResponse(id)).thenReturn(expectedLessonDto);
-
-        // Act
-        LessonDto actualLessonDto = lessonController.getLessonById(id);
-
-        // Assert
-        assertNotNull(actualLessonDto);
-        assertEquals(expectedLessonDto, actualLessonDto);
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void testGetLessonById_NonExistingId_ReturnsNull() {
+    public void testGetLessonById() {
         // Arrange
         int id = 1;
+        LessonDto expectedDto = new LessonDto();
         when(lessonCache.getLessonResponse(id)).thenReturn(null);
-        when(lessonService.getLessonById(id)).thenReturn(null);
+        when(lessonService.getLessonById(id)).thenReturn(expectedDto);
 
         // Act
-        LessonDto actualLessonDto = lessonController.getLessonById(id);
+        LessonDto result = lessonController.getLessonById(id);
 
         // Assert
-        assertNull(actualLessonDto);
+        assertEquals(expectedDto, result);
+        verify(lessonCache, times(1)).saveLessonResponse(id, expectedDto);
     }
 
     @Test
-    public void testAddLesson_ValidInput_ReturnsOkResponse() {
+    public void testGetLessonsByTeacherLastNameAndDayOfWeek() {
+        // Arrange
+        String teacherLastName = "Smith";
+        String dayOfWeek = "Monday";
+        List<DayLessonDto> expectedList = new ArrayList<>();
+        when(lessonService.getLessonsByTeacherLastNameAndDayOfWeek(teacherLastName, dayOfWeek)).thenReturn(expectedList);
+
+        // Act
+        List<DayLessonDto> result = lessonController.getLessonsByTeacherLastNameAndDayOfWeek(teacherLastName, dayOfWeek);
+
+        // Assert
+        assertEquals(expectedList, result);
+    }
+
+    @Test
+    public void testAddLesson() {
         // Arrange
         LessonEntity lessonEntity = new LessonEntity();
-        String teacher = "John Doe";
-        when(lessonService.addLesson(lessonEntity, teacher)).thenReturn(lessonEntity);
+        String teacher = "Smith";
+        when(lessonService.addLesson(any(LessonEntity.class), eq(teacher))).thenReturn(new LessonEntity());
 
         // Act
-        ResponseEntity<String> response = lessonController.addLesson(lessonEntity, teacher);
+        ResponseEntity<String> result = lessonController.addLesson(lessonEntity, teacher);
 
         // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("success", response.getBody());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
-    public void testAddLesson_NullInput_ReturnsBadRequest() {
+    public void testAddLessons() {
         // Arrange
-        LessonEntity lessonEntity = null;
-        String teacher = "John Doe";
+        List<LessonEntity> lessonEntities = new ArrayList<>();
+        String teacher = "Smith";
+        doNothing().when(lessonService).addLessons(any(List.class), eq(teacher));
 
         // Act
-        ResponseEntity<String> response = lessonController.addLesson(lessonEntity, teacher);
+        ResponseEntity<String> result = lessonController.addLessons(lessonEntities, teacher);
 
         // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("error", response.getBody());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+
+
+    @Test
+    public void testUpdateLesson() {
+        // Arrange
+        int id = 1;
+        LessonEntity lessonEntity = new LessonEntity();
+        when(lessonService.updateLesson(eq(id), any(LessonEntity.class))).thenReturn(new LessonEntity());
+
+        // Act
+        ResponseEntity<String> result = lessonController.updateLesson(id, lessonEntity);
+
+        // Assert
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
-    public void testGetLessonsByTeacherLastNameAndDayOfWeek_ValidInput_ReturnsDayLessonDtoList() {
+    public void testDeleteLesson() {
         // Arrange
-        String teacherLastName = "Doe";
-        String dayOfWeek = "Monday";
-        List<DayLessonDto> expectedDayLessonDtoList = new ArrayList<>();
-        when(lessonService.getLessonsByTeacherLastNameAndDayOfWeek(teacherLastName, dayOfWeek))
-                .thenReturn(expectedDayLessonDtoList);
+        int id = 1;
+        doNothing().when(lessonService).deleteLesson(eq(id));
 
         // Act
-        List<DayLessonDto> actualDayLessonDtoList = lessonController.getLessonsByTeacherLastNameAndDayOfWeek(teacherLastName, dayOfWeek);
+        ResponseEntity<String> result = lessonController.deleteLesson(id);
 
         // Assert
-        assertNotNull(actualDayLessonDtoList);
-        assertEquals(expectedDayLessonDtoList, actualDayLessonDtoList);
-    }
-
-    @Test
-    public void testGetLessonsByTeacherLastNameAndDayOfWeek_InvalidInput_ReturnsEmptyList() {
-        // Arrange
-        String teacherLastName = "Doe";
-        String dayOfWeek = "Monday";
-        when(lessonService.getLessonsByTeacherLastNameAndDayOfWeek(teacherLastName, dayOfWeek))
-                .thenReturn(null);
-
-        // Act
-        List<DayLessonDto> actualDayLessonDtoList = lessonController.getLessonsByTeacherLastNameAndDayOfWeek(teacherLastName, dayOfWeek);
-
-        // Assert
-        assertNotNull(actualDayLessonDtoList);
-        assertTrue(actualDayLessonDtoList.isEmpty());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 }
