@@ -1,24 +1,26 @@
 package com.example.teachershedule.service;
 
-import com.example.teachershedule.entity.LessonEntity;
-import com.example.teachershedule.entity.TeacherEntity;
 import com.example.teachershedule.dao.LessonRepository;
 import com.example.teachershedule.dao.TeacherScheduleRepository;
+import com.example.teachershedule.dto.LessonDto;
+import com.example.teachershedule.entity.LessonEntity;
+import com.example.teachershedule.entity.TeacherEntity;
+import com.example.teachershedule.service.LessonService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class LessonServiceTests {
+class LessonServiceTests {
 
     @Mock
     private LessonRepository lessonRepository;
@@ -29,86 +31,138 @@ public class LessonServiceTests {
     @InjectMocks
     private LessonService lessonService;
 
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
-    public void testAddLesson_Success() {
+    void addLesson_Success() {
         // Arrange
         LessonEntity lessonEntity = new LessonEntity();
+        lessonEntity.setSubject("Math");
+
         TeacherEntity teacherEntity = new TeacherEntity();
-        String teacherLastName = "Smith";
-        when(teacherRepository.findByLastName(teacherLastName)).thenReturn(teacherEntity);
-        when(lessonRepository.save(any(LessonEntity.class))).thenReturn(new LessonEntity());
+        teacherEntity.setLastName("Smith");
+
+        when(teacherRepository.findByLastName("Smith"))
+                .thenReturn(teacherEntity);
+
+        when(lessonRepository.save(any(LessonEntity.class)))
+                .thenReturn(lessonEntity);
 
         // Act
-        LessonEntity result = lessonService.addLesson(lessonEntity, teacherLastName);
+        LessonEntity result = lessonService.addLesson(lessonEntity, "Smith");
 
         // Assert
         assertNotNull(result);
-        verify(lessonRepository, times(1)).save(any(LessonEntity.class));
+        assertEquals("Math", result.getSubject());
+        assertEquals(teacherEntity, result.getTeacher());
+        verify(lessonRepository, times(1)).save(lessonEntity);
     }
 
     @Test
-    public void testAddLesson_InvalidLesson() {
-        // Arrange
-        String teacherLastName = "Smith";
-
-        // Act + Assert
-        assertThrows(IllegalArgumentException.class, () -> lessonService.addLesson(null, teacherLastName));
+    void addLesson_NullLesson() {
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> lessonService.addLesson(null, "Smith"));
         verify(lessonRepository, never()).save(any(LessonEntity.class));
     }
 
     @Test
-    public void testAddLesson_InvalidTeacher() {
+    void addLesson_TeacherNotFound() {
         // Arrange
         LessonEntity lessonEntity = new LessonEntity();
-        String teacherLastName = "Smith";
-        when(teacherRepository.findByLastName(teacherLastName)).thenReturn(null);
+        lessonEntity.setSubject("Math");
 
-        // Act + Assert
-        assertThrows(IllegalArgumentException.class, () -> lessonService.addLesson(lessonEntity, teacherLastName));
+        when(teacherRepository.findByLastName("Smith"))
+                .thenReturn(null);
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> lessonService.addLesson(lessonEntity, "Smith"));
+        verify(lessonRepository, never()).save(any(LessonEntity.class));
+    }
+
+    @Test
+    void addLessons_Success() {
+        // Arrange
+        LessonEntity lessonEntity = new LessonEntity();
+        lessonEntity.setSubject("Math");
+        List<LessonEntity> lessonEntities = Collections.singletonList(lessonEntity);
+
+        TeacherEntity teacherEntity = new TeacherEntity();
+        teacherEntity.setLastName("Smith");
+
+        when(teacherRepository.findByLastName("Smith"))
+                .thenReturn(teacherEntity);
+
+        when(lessonRepository.save(any(LessonEntity.class)))
+                .thenReturn(lessonEntity);
+
+        // Act
+        lessonService.addLessons(lessonEntities, "Smith");
+
+        // Assert
+        verify(lessonRepository, times(1)).save(lessonEntity);
+    }
+
+    @Test
+    void addLessons_NullLessonList() {
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> lessonService.addLessons(null, "Smith"));
+        verify(lessonRepository, never()).save(any(LessonEntity.class));
+    }
+
+    @Test
+    void addLessons_TeacherNotFound() {
+        // Arrange
+        LessonEntity lessonEntity = new LessonEntity();
+        lessonEntity.setSubject("Math");
+        List<LessonEntity> lessonEntities = Collections.singletonList(lessonEntity);
+
+        when(teacherRepository.findByLastName("Smith"))
+                .thenReturn(null);
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> lessonService.addLessons(lessonEntities, "Smith"));
         verify(lessonRepository, never()).save(any(LessonEntity.class));
     }
 
     /*@Test
-    public void testAddLessons_Success() {
+    void getLessonById_ExistingLesson() {
         // Arrange
-        List<LessonEntity> lessonEntities = new ArrayList<>();
-        TeacherEntity teacherEntity = new TeacherEntity();
-        String teacherLastName = "Smith";
-        when(teacherRepository.findByLastName(teacherLastName)).thenReturn(teacherEntity);
-        when(lessonRepository.save(any(LessonEntity.class))).thenReturn(new LessonEntity());
+        int id = 1;
+        LessonEntity lessonEntity = new LessonEntity();
+        lessonEntity.setId(id);
+
+        when(lessonRepository.findById(id))
+                .thenReturn(Optional.of(lessonEntity));
 
         // Act
-        assertDoesNotThrow(() -> lessonService.addLessons(lessonEntities, teacherLastName));
+        LessonDto result = lessonService.getLessonById(id);
 
         // Assert
-        verify(lessonRepository, times(lessonEntities.size())).save(any(LessonEntity.class));
+        assertNotNull(result);
+        assertEquals(id, result.getId());
     }*/
 
     @Test
-    public void testAddLessons_InvalidInput() {
+    void getLessonById_NonExistingLesson() {
         // Arrange
-        List<LessonEntity> lessonEntities = null;
-        String teacherLastName = "Smith";
+        int id = 1;
 
-        // Act + Assert
-        assertThrows(IllegalArgumentException.class, () -> lessonService.addLessons(lessonEntities, teacherLastName));
-        verify(lessonRepository, never()).save(any(LessonEntity.class));
+        when(lessonRepository.findById(id))
+                .thenReturn(Optional.empty());
+
+        // Act
+        LessonDto result = lessonService.getLessonById(id);
+
+        // Assert
+        assertNull(result);
     }
 
-    /*@Test
-    public void testAddLessons_InvalidTeacher() {
-        // Arrange
-        List<LessonEntity> lessonEntities = new ArrayList<>();
-        String teacherLastName = "Smith";
-        when(teacherRepository.findByLastName(teacherLastName)).thenReturn(null);
-
-        // Act + Assert
-        assertThrows(IllegalArgumentException.class, () -> lessonService.addLessons(lessonEntities, teacherLastName));
-        verify(lessonRepository, never()).save(any(LessonEntity.class));
-    }*/
-
-    // Добавьте другие тесты для остальных методов LessonService
+    // Add more test cases for other methods as needed
 }
+
 
 
 
